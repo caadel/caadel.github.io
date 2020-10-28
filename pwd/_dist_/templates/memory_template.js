@@ -245,11 +245,11 @@ function content (parentId, parent, header, menu) {
 
     const cardFaceFront = document.createElement('IMG')
     cardFaceFront.classList = 'memory-card-face memory-card-face-front'
-    cardFaceFront.setAttribute('src', '../img/memory/front.png')
+    cardFaceFront.setAttribute('src', '../pwd/img/memory/front.png')
 
     const cardFaceBack = document.createElement('IMG')
     cardFaceBack.classList = 'memory-card-face memory-card-face-back'
-    cardFaceBack.setAttribute('src', `../img/memory/${cards[index]}.png`)
+    cardFaceBack.setAttribute('src', `../pwd/img/memory/${cards[index]}.png`)
 
     card.appendChild(cardFaceFront)
     card.appendChild(cardFaceBack)

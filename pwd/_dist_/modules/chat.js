@@ -256,7 +256,7 @@ Chat.prototype = {
         channel: this.channel
       })
 
-      this.socket.send(JSON.stringify(msgToServer))
+      //this.socket.send(JSON.stringify(msgToServer))
     }
   },
 
@@ -304,9 +304,11 @@ Chat.prototype = {
    * @returns {void}.
    */
   connect: function () {
-    this.socket = new WebSocket('ws://vhost3.lnu.se:20080/socket/')
+    // this.socket = new WebSocket('ws://vhost3.lnu.se:20080/socket/')
+    console.log('Chat not opened: no https')
 
     const parent = this
+    /* 
     this.socket.onopen = () => {
       console.log('The websocket is now open.')
     }
@@ -318,6 +320,7 @@ Chat.prototype = {
     this.socket.onclose = () => {
       console.log('The websocket is now closed.')
     }
+    */
   }
 }
 

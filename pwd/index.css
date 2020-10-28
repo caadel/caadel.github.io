@@ -1,0 +1,1136 @@
+/* GENERAL */
+@import url('https://fonts.googleapis.com/css?family=Roboto|Open+Sans');
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* CSS variables */
+:root {
+  --icon-primary: #5e6163;
+  --icon-secondary: #b1b1b1;
+  --icon-secondary-2: #a1a1a1;
+  --icon-focus: #c9c9c9;
+  --gray-1: #23232e;
+  --gray-2: #2d2d38;
+  --gray-3: #444450;
+  --gray-4: #52525c;
+  --gray-5: #ccc;
+  --gray-6: rgb(226, 226, 226);
+  --chat-1: rgb(142, 209, 248);
+  --chat-2: rgb(168, 224, 181);
+  --windowBackInactive: #d6d6db;
+  --windowBackFocus: rgb(252, 252, 252);
+  --windowHeaderInactive: #373744;
+  --font-openSans: 'Open Sans', Arial, sans-serif;
+  --font-roboto: 'Roboto', Arial, sans-serif;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  line-height: 1.4;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+a {
+  background-color: transparent;
+}
+
+p {
+  font-family: 'Open Sans', Arial, sans-serif;
+}
+
+textarea {
+  resize: none;
+}
+
+/* WINDOW STUFF */
+.window {
+  position: absolute;
+  z-index: 11;
+  background-color: var(--windowBackInactive);
+  text-align: center;
+  border: 1px solid var(--gray-2);
+  top: 51vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.window-header-container {
+  background-color: var(--windowHeaderInactive);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+}
+
+.window-header-img {
+  height: 26px;
+  flex: 0 0 29px;
+  padding: 3px;
+  cursor: grab;
+}
+
+.window-header-img svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--icon-secondary);
+}
+
+.window-header {
+  cursor: grab;
+  color: white;
+  font-size: 15px;
+  flex: 1;
+  vertical-align: middle;
+}
+
+.window-close {
+  height: 25px;
+  width: 25px;
+  flex: 0 0 25px;
+  color: white;
+  transition: all 0.2s;
+  padding-top: 3px;
+  padding-right: 1px;
+}
+
+.window-close svg {
+  width: 12px;
+  height: 12px;
+}
+
+.window-close path {
+  stroke: var(--icon-secondary);
+}
+
+.window-close:hover {
+  cursor: pointer;
+}
+
+.window-close:hover path {
+  stroke: var(--icon-primary);
+}
+
+.window-content {
+  height: fit-content;
+  padding: 10px;
+}
+
+.window-focus .window-header-container {
+  background-color: var(--gray-1);
+}
+
+.window-focus {
+  border: 1px solid var(--gray-1);
+  background-color: var(--windowBackFocus);
+}
+
+/* ============= TASKBAR & APP SHORTCUTS ============= */
+#taskbar {
+  box-sizing: border-box;
+  padding: 0;
+  overflow: visible;
+  background-color: var(--gray-1);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 53px;
+  z-index: 999999;
+}
+
+#taskbar-shortcuts {
+  float: left;
+  padding: 7px;
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+}
+
+#taskbar-shortcuts div {
+  margin-right: 20px;
+  transition: all 0.1s;
+}
+
+#taskbar-shortcuts div:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+}
+
+#taskbar-shortcuts div:hover .app-shortcut-tooltip {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.app-shortcut {
+  box-sizing: content-box;
+  height: 28px;
+  width: 28px;
+  padding: 4px;
+  position: relative;
+}
+
+.app-shortcut svg {
+  width: 100%;
+  height: 100%;
+}
+
+.app-shortcut-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(255, 255, 255, 0);
+  border-radius: 3px;
+  padding: 2px 5px;
+  left: 0;
+  top: 0;
+  width: 60px;
+  transform: translate(-20%, -123%);
+  -webkit-transform: translate(-20%, -123%);
+  -moz-transform: translate(-20%, -123%);
+  -o-transform: translate(-20%, -123%);
+  -ms-transform: translate(-20%, -123%);
+  font-family: var(--font-roboto);
+  font-size: 12px;
+  text-align: center;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.app-shortcut-filled {
+  fill: var(--icon-secondary);
+}
+
+.app-shortcut-default {
+  border: 2px solid var(--gray-1);
+}
+
+.app-shortcut-border {
+  border: 2px solid var(--icon-primary);
+}
+
+.app-shortcut-border:hover {
+  border-color: var(--icon-secondary);
+}
+
+.app-shortcut-default-active {
+  border-bottom-color: var(--icon-primary);
+}
+
+.app-shortcut-default-active:hover {
+  border-bottom-color: var(--gray-1);
+}
+
+.app-shortcut-default-active-focus {
+  border-bottom-color: var(--icon-focus);
+}
+
+.app-shortcut-default-active-focus:hover {
+  border-bottom-color: var(--gray-1);
+}
+
+.app-shortcut-border-active {
+  border-color: var(--icon-secondary-2);
+}
+
+.app-shortcut-border-active-focus {
+  border-color: var(--icon-focus);
+}
+
+#taskbar-shortcuts div .app-shortcut-path,
+#taskbar-shortcuts div .app-shortcut-filled {
+  stroke: var(--icon-primary);
+}
+
+#taskbar-shortcuts div .app-shortcut-filled {
+  fill: var(--icon-primary);
+}
+
+#taskbar-shortcuts div:hover .app-shortcut-path,
+#taskbar-shortcuts div:hover .app-shortcut-filled {
+  stroke: var(--icon-secondary);
+}
+
+#taskbar-shortcuts div:hover .app-shortcut-filled {
+  fill: var(--icon-secondary);
+}
+
+#taskbar-datetime {
+  float: right;
+  padding: 5px 15px;
+  height: 100%;
+  flex-direction: column;
+  transition: all 0.2s;
+}
+
+#taskbar-datetime:hover {
+  background-color: var(--gray-2);
+}
+
+#taskbar-datetime p {
+  color: white;
+  height: 100%;
+  font-size: 14px;
+}
+
+/* ============= DESKTOP ============= */
+#desktop {
+  height: 100%;
+  background-color: var(--gray-5);
+}
+
+.desktop-cover {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.desktop-repeat {
+  background-repeat: repeat;
+}
+
+/* ============= HANGMAN ============= */
+.hangman-part {
+  display: none;
+}
+
+.hangman-container {
+  width: fit-content;
+  width: 400px;
+  height: 501px;
+  background-color: rgb(236, 232, 232);
+  position: relative;
+  flex: 0 0 1;
+}
+
+.gameEnd {
+  text-align: center;
+  color: #000;
+  top: 25%;
+}
+
+.gameEnd,
+.hangman-start-button,
+.overlay,
+.memory-game-end {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 416px;
+  height: 516px;
+  display: none;
+  top: 50%;
+}
+
+.hangman-svg {
+  margin: 8px 8px 0;
+}
+
+.hangman-start-button {
+  padding: 6px;
+  border: none;
+  border-bottom: 2px solid black;
+  top: 50%;
+  font-size: 15px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  border-radius: 4px 4px 0 0;
+  background-color: rgb(241, 241, 241);
+}
+
+.hangman-start-button:hover {
+  background-color: rgb(190, 190, 190);
+  cursor: pointer;
+}
+
+.hangman-io-area {
+  height: 501px;
+  margin-left: 10px;
+  flex-direction: column;
+}
+
+.hangman-io-area div:first-child {
+  margin-bottom: 10px;
+}
+
+.hangman-io-area form:last-child {
+  margin-top: 10px;
+}
+
+.hangman-guess-inner {
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hangman-guess-inner h3:first-child {
+  margin-bottom: 10px;
+}
+
+.box-title {
+  border-bottom: 2px solid black;
+  padding-bottom: 10px;
+  margin-top: 0;
+  width: 100%;
+}
+
+.hangman-io-box {
+  padding: 10px;
+  width: 250px;
+  text-align: center;
+  flex: 1;
+  flex-direction: column;
+}
+
+.hangman-tip {
+  margin-top: 14px;
+  font-size: 12px;
+}
+
+.hangman-form input {
+  padding: 10px;
+  display: block;
+  width: 100%;
+  border: 2px solid black;
+}
+
+.hangman-form input:focus {
+  border-color: rgb(117, 117, 117);
+  outline: none;
+}
+
+.hangman-form input[type='submit'] {
+  box-sizing: border-box;
+  border: 1px solid #2b87b7;
+  background-color: #2b87b7;
+  color: white;
+  margin-top: 10px;
+}
+
+.hangman-form input[type='submit']:hover {
+  background-color: #287ba8;
+  cursor: pointer;
+  border: 1px solid #153e55;
+}
+
+/* ============= SETTINGS APP ============= */
+.settings-left-menu {
+  min-height: 300px;
+}
+
+.settings-left-menu div {
+  padding: 8px;
+  width: 100%;
+}
+
+.settings-left-menu h4,
+.memory-left-menu h4 {
+  text-align: left;
+  font-family: var(--font-roboto);
+  color: white;
+  padding: 0 8px;
+  font-weight: 600;
+}
+
+.settings-left-menu .app-shortcut,
+.memory-left-menu .app-shortcut {
+  flex: 0 0 20px;
+  padding: 0;
+}
+
+.settings-left-menu .app-shortcut svg {
+  stroke: var(--icon-primary);
+}
+
+.settings-left-menu div:hover {
+  background-color: var(--gray-4);
+  cursor: pointer;
+}
+
+.settings-left-menu-active {
+  background-color: var(--gray-3);
+}
+
+.settings-right-content {
+  padding: 10px;
+  flex: 1;
+  min-height: 300px;
+  width: 350px;
+}
+
+.settings-right-content h2 {
+  text-align: center;
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+}
+
+.settings-right-content h3 {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.settings-right-content p {
+  font-size: 14px;
+}
+
+.switch-container {
+  padding: 5px;
+}
+
+/*
+ * Slider/toggle css src:
+ * https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch
+ */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 51px;
+  height: 25px;
+  margin-right: 10px;
+  outline: 2px solid var(--windowBackFocus);
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider::before {
+  position: absolute;
+  content: '';
+  height: 17px;
+  width: 17px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--gray-1);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider::before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/**
+ * Radio button css src:
+ * https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_radio
+ */
+.radio-container {
+  display: inline-block;
+  position: relative;
+  padding: 5px;
+  margin-bottom: 12px;
+  width: 160px;
+  cursor: pointer;
+  font-family: var(--font-openSans);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.radio-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.radio-container:hover input ~ .checkmark {
+  background-color: var(--gray-4);
+}
+
+.radio-container input:checked ~ .checkmark {
+  background-color: var(--gray-2);
+}
+
+.checkmark::after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+.radio-container .checkmark::after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.settings-background-label {
+  display: inline-block;
+  padding: 7px 55px;
+  margin-right: 10px;
+}
+
+.settings-background-label:hover,
+.settings-clear:hover {
+  background-color: var(--gray-4);
+  color: white;
+  cursor: pointer;
+}
+
+.settings-clear {
+  border: 0;
+  padding: 7px 14px;
+}
+
+.settings-clear-general {
+  float: left;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.settings-background-label,
+.settings-clear {
+  font-size: 16px;
+  font-family: var(--font-openSans);
+  background-color: var(--gray-5);
+  transition: all 0.2s;
+  outline: 2px solid var(--windowBackFocus);
+}
+
+.settings-background-input {
+  display: none;
+}
+
+/* ============= MEMORY GAME ============= */
+.memory-window {
+  width: fit-content;
+}
+
+.memory-game-end {
+  top: 50%;
+  text-align: center;
+  font-size: 18px;
+  color: black;
+  display: none;
+}
+
+.memory-left-menu div {
+  padding: 6px 8px;
+  width: 100%;
+}
+
+.memory-grid-size {
+  flex-direction: column;
+  border-bottom: 2px solid var(--gray-1);
+  border-top: 2px solid var(--gray-1);
+}
+
+.memory-grid-size div {
+  height: 35px;
+}
+
+.memory-grid-size h4 {
+  text-align: left;
+  width: 100%;
+}
+
+.memory-grid-size-times {
+  color: white;
+  margin: 0 12px;
+  font-size: 18px;
+  font-family: var(--font-roboto);
+}
+
+.memory-size-icons {
+  flex-direction: column;
+}
+
+.memory-size-icons span {
+  height: 6px;
+  width: 15px;
+  margin-bottom: 11px;
+  margin-left: 3px;
+}
+
+.memory-size-icons span svg {
+  height: 14px;
+  width: 14px;
+  margin-top: 0;
+  cursor: pointer;
+  background-color: var(--gray-4);
+  padding: 2px;
+}
+
+.memory-size-icons span svg:hover .app-shortcut-path {
+  stroke: var(--gray-2);
+}
+
+.memory-size-icons span svg:hover {
+  background-color: var(--gray-5);
+}
+
+.memory-size-icons span .app-shortcut-path {
+  stroke: var(--icon-secondary);
+}
+
+.memory-grid-size p,
+.memory-grid-size-firefox p {
+  text-align: center;
+  width: 31px;
+  height: 31px;
+  line-height: 30px;
+  color: white;
+  background-color: var(--gray-4);
+}
+
+.memory-grid-size p {
+  margin-top: 1px;
+}
+
+.memory-grid-size-firefox p {
+  margin-top: 3px;
+}
+
+.memory-restart {
+  cursor: pointer;
+}
+
+.memory-restart .app-shortcut-path {
+  stroke: var(--gray-5);
+}
+
+.memory-restart:hover {
+  background-color: var(--gray-3);
+  cursor: pointer;
+}
+
+.memory-right-content {
+  padding: 10px 0 0 10px;
+  margin: 0;
+  box-sizing: content-box;
+  position: relative;
+}
+
+.memory-card {
+  width: 60px;
+  height: 60px;
+  transition: transform 0.15s;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  cursor: pointer;
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 4px;
+  padding: 0;
+  display: inline-block;
+}
+
+.memory-card.memory-card-flipped,
+.memory-card-face-back {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+}
+
+.memory-card:hover,
+.memory-card-selected {
+  outline: 3px solid rgb(133, 133, 133);
+}
+
+.memory-card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+}
+
+.memory-card-face-front,
+.memory-card-face-back {
+  background: var(--gray-5);
+}
+
+.memory-card-deactivated {
+  visibility: hidden;
+}
+
+/* ============= CHAT ============= */
+.chat-window {
+  flex-direction: column;
+  padding: 0;
+}
+
+/* Chat settings */
+.chat-menu {
+  background-color: var(--gray-6);
+  padding: 0;
+  width: 400px;
+  flex-direction: column;
+  height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--gray-4);
+  box-sizing: content-box;
+}
+
+.chat-menu-item,
+.chat-menu-button {
+  padding: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.chat-menu-item {
+  padding-left: 15px;
+  padding-right: 10px;
+}
+
+.chat-menu-button {
+  background-color: var(--gray-5);
+  border-bottom: 1px solid var(--gray-4);
+}
+
+.chat-menu-button:hover {
+  background-color: var(--gray-6);
+}
+
+.chat-menu-item:hover {
+  background-color: var(--gray-5);
+}
+
+.chat-menu-item:hover .chat-settings-input,
+.chat-settings-input:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.chat-menu-item h5,
+.chat-menu-button h5 {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.chat-menu-icon {
+  box-sizing: content-box;
+  height: 20px;
+  padding: 0;
+}
+
+.chat-menu-icon svg {
+  width: 12px;
+  height: 12px;
+  stroke: black;
+}
+
+.chat-settings-input {
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  outline: 0;
+  font-family: var(--font-roboto);
+  width: 100%;
+  margin-right: 8px;
+}
+
+/* Message input */
+.chat-input,
+.chat-input-firefox {
+  height: 60px;
+  width: 386px;
+  padding: 5px 25px 5px 7px;
+  background-color: var(--gray-6);
+  border-radius: 3px;
+  border: 0;
+  outline: 0;
+}
+
+.chat-input {
+  margin: 0;
+}
+
+.chat-input-firefox {
+  margin-bottom: 4px;
+}
+
+.chat-input:focus {
+  background-color: var(--gray-5);
+}
+
+.chat-input-container {
+  position: relative;
+  padding: 7px 7px 1px;
+  margin: 0;
+}
+
+/* Emoji menu */
+.emoji-menu-button {
+  position: absolute;
+  right: 8px;
+  bottom: 40px;
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emoji-menu-button:hover {
+  background-color: var(--gray-4);
+}
+
+.emoji-menu {
+  height: 250px;
+  width: 220px;
+  position: absolute;
+  bottom: 62px;
+  right: 32px;
+  background-color: var(--gray-6);
+  padding: 9px;
+  border-radius: 3px;
+  border: 1px solid var(--gray-5);
+  overflow-y: scroll;
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.emoji-menu h5:nth-child(2) {
+  margin-top: 40px;
+}
+
+.emoji-category-title {
+  border-bottom: 1px solid black;
+  float: left;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.emoji-item,
+.emoji-item-smaller {
+  border-radius: 3px;
+  float: left;
+  cursor: pointer;
+}
+
+.emoji-item {
+  padding: 6px 4px;
+  width: 30px;
+}
+
+.emoji-item-smaller {
+  padding: 4px;
+  width: 29px;
+}
+
+.emoji-item:hover,
+.emoji-item-smaller:hover {
+  background-color: var(--gray-5);
+}
+
+.emoji-category-menu {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  width: 180px;
+  height: 36px;
+  padding: 3px;
+  position: fixed;
+}
+
+.emoji-category-active {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Chat log */
+.chat-log {
+  height: 450px;
+  width: 400px;
+  text-align: left;
+  padding: 8px;
+  overflow-y: scroll;
+}
+
+/* Message speech bubbles */
+.chat-message-right,
+.chat-message-left {
+  max-width: 250px;
+  margin-bottom: 35px;
+  font-family: var(--font-roboto);
+  font-size: 13px;
+}
+
+.chat-message-right {
+  min-width: 85px;
+  float: right;
+}
+
+.chat-message-left {
+  min-width: 140px;
+  float: left;
+}
+
+.chat-message-left span,
+.chat-message-right span {
+  font-size: 10px;
+}
+
+.chat-message-right span {
+  margin-left: 4px;
+  float: left;
+}
+
+.chat-message-left span {
+  margin-right: 4px;
+  float: right;
+}
+
+.chat-bubble-right,
+.chat-bubble-left {
+  display: block;
+  position: relative;
+  height: auto;
+  padding: 1em;
+  text-align: left;
+  line-height: 1.5em;
+  border-radius: 5px;
+}
+
+.chat-bubble-left {
+  background-color: var(--chat-2);
+}
+
+.chat-bubble-right {
+  background-color: var(--chat-1);
+}
+
+.chat-bubble-left::after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 22px solid;
+  border-color: transparent transparent transparent var(--chat-2);
+}
+
+.chat-bubble-right::after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: 0;
+  bottom: -20px;
+  border: 12px solid;
+  border-color: var(--chat-1) var(--chat-1) transparent transparent;
+}
+
+/* ============= SHARED STUFF ============= */
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.white-box {
+  border: 1px solid rgb(224, 224, 224);
+  background-color: white;
+}
+
+.left-menu {
+  flex-direction: column;
+  background-color: var(--gray-3);
+  width: 160px;
+}
+
+.window-focus .wrapper .left-menu {
+  background-color: var(--gray-2);
+}
+
+.expandable {
+  -moz-transition: height 0.4s;
+  -ms-transition: height 0.4s;
+  -o-transition: height 0.4s;
+  -webkit-transition: height 0.4s;
+  transition: height 0.4s;
+}
+
+.hidden {
+  display: none;
+}
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

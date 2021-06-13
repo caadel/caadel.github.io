@@ -1,6 +1,6 @@
-import Windows from './modules/windows.js'
-import Settings from './modules/settings.js'
-import Apps from './apps.js'
+import Windows from './system-modules/windows.js'
+import Settings from './system-modules/settings.js'
+import Apps from './system-modules/apps-init.js'
 
 // Init everything
 window.addEventListener('DOMContentLoaded', async () => {

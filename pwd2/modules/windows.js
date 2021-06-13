@@ -1,27 +1,44 @@
 // import OpenApps from './modules/open-apps.js'
 
-let dropArea = document.getElementById('desktop')
+let desktop = document.getElementById('desktop')
 
-for (const windowElement of document.getElementsByClassName('window')) {
-  const windowHeader = windowElement.getElementsByClassName('header')[0]
+async function createWindow() {
+  // Get templates
+  let templates = document.createElement('template')
+  templates.innerHTML = await (await fetch('templates.html')).text()
 
-  // const elmnt = window(selectedApp)
-  const elmnt = windowElement
+  // Create window
+  let windowTemplate = templates.content
+    .querySelector('#window-template')
+    .content.cloneNode(true)
 
-  console.log(elmnt)
+  // TODO: get id number from openApps later
+  const window = windowTemplate.querySelector('.window')
+  window.id = `window_${1}`
+  // window.style.zIndex = id from openApps
 
-  // OpenApps.add(selectedApp.name, elmnt)
+  // Add app content to window, TODO: get id from OpenApps or app icons
+  let appHTML = templates.content
+    .querySelector('#calculator')
+    .content.cloneNode(true)
+
+  window.querySelector('.content').innerHTML = appHTML.textContent
 
   let pos1,
     pos2,
     pos3,
     pos4 = 0
 
-  elmnt.childNodes[1].childNodes[1].onmousedown = dragging
-  elmnt.childNodes[1].childNodes[3].onmousedown = dragging
+  // Get the header components
+  const windowIcon = window.querySelector('.icon')
+  const windowTitle = window.querySelector('.title')
+  const windowClose = window.querySelector('.close')
+
+  windowIcon.onmousedown = dragging
+  windowTitle.onmousedown = dragging
 
   // Whenever the window is clicked, move it to the top
-  elmnt.addEventListener('click', () => {
+  window.addEventListener('click', () => {
     // OpenApps.setActiveWindow(selectedApp.name, elmnt)
   })
 
@@ -39,16 +56,16 @@ for (const windowElement of document.getElementsByClassName('window')) {
 
     // Stop moving when mouse button is released:
     document.onmouseup = () => {
-      elmnt.childNodes[1].childNodes[1].style.cursor = 'grab'
-      elmnt.childNodes[1].childNodes[3].style.cursor = 'grab'
+      windowIcon.style.cursor = 'grab'
+      windowTitle.style.cursor = 'grab'
       document.onmouseup = null
       document.onmousemove = null
     }
 
     // call a function whenever the cursor moves:
     document.onmousemove = (moveEvent) => {
-      elmnt.childNodes[1].childNodes[1].style.cursor = 'grabbing'
-      elmnt.childNodes[1].childNodes[3].style.cursor = 'grabbing'
+      windowIcon.style.cursor = 'grabbing'
+      windowTitle.style.cursor = 'grabbing'
       moveEvent = moveEvent || window.event
       moveEvent.preventDefault()
       // calculate the new cursor position:
@@ -57,23 +74,21 @@ for (const windowElement of document.getElementsByClassName('window')) {
       pos3 = moveEvent.clientX
       pos4 = moveEvent.clientY
       // set the element's new position:
-      elmnt.style.top = `${elmnt.offsetTop - pos2}px`
-      elmnt.style.left = `${elmnt.offsetLeft - pos1}px`
+      window.style.top = `${window.offsetTop - pos2}px`
+      window.style.left = `${window.offsetLeft - pos1}px`
     }
   }
 
   // Close window
-  elmnt.childNodes[1].childNodes[5].addEventListener('click', () => {
+  windowClose.addEventListener('click', () => {
     // OpenApps.remove(selectedApp.name, elmnt.id)
-    elmnt.remove()
+    window.remove()
   })
 
-  // Add the element to the screen once it is fully initialized
-  desktop.appendChild(elmnt)
-}
+  // OpenApps.add(selectedApp.name, elmnt)
 
-function createWindow() {
-  console.log('create window')
+  // Add the element to the screen once it is fully initialized
+  desktop.appendChild(windowTemplate)
 }
 
 export default {

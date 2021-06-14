@@ -13,6 +13,12 @@ async function init() {
 }
 
 function createWindow(appName) {
+  const appTemplate = templates.content.querySelector(`#${appName}`)
+  if (appTemplate === null) {
+    console.log(`No app exist with the name "${appName}"!`)
+    return
+  }
+
   // Create window
   const windowTemplate = templates.content
     .querySelector('#window-template')
@@ -24,9 +30,7 @@ function createWindow(appName) {
   // window.style.zIndex = id from openApps
 
   // Add app content to window, TODO: get id from OpenApps or app icons
-  const appHTML = templates.content
-    .querySelector(`#${appName}`)
-    .content.cloneNode(true)
+  const appHTML = appTemplate.content.cloneNode(true)
 
   windowElement.querySelector('.content').innerHTML = appHTML.textContent
 

@@ -14,10 +14,18 @@ body {
   box-sizing: border-box;
 }
 
+i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* ============== DESKTOP ============== */
 #desktop {
-  background-color: darkseagreen;
   position: relative;
+  background-image: url('../img/background.png');
+  background-size: cover;
   width: 100vw;
   height: 100vh;
   z-index: 1;
@@ -31,11 +39,9 @@ body {
 /* ============== WINDOWS ============== */
 .window {
   position: absolute;
-  background-color: darkgray;
   text-align: center;
   /* border: 2px solid var(--window-border-blue); */
   width: 300px;
-  height: 250px;
   box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
@@ -50,18 +56,19 @@ body {
 }
 
 .window > .header {
-  background-color: rgb(71, 71, 71);
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
   height: 2em;
   color: white;
   display: flex;
-  position: relative;
   cursor: grab;
 }
 
 .window > .header span {
+  position: relative;
   text-align: center;
   display: inline;
-  position: relative;
 }
 
 .window > .header .icon {
@@ -86,14 +93,14 @@ body {
 }
 
 .window > .header .close:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 
-i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.window > .content {
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ============== TASKBAR ============== */
@@ -104,5 +111,77 @@ i {
   height: 3em;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 2;
+  z-index: 999998;
+  backdrop-filter: blur(2px);
+}
+
+.app-list {
+  height: 3em;
+  width: 3em;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  outline: 2px solid red;
+}
+
+.app-list i {
+  font-size: 1.2em;
+}
+
+.app-shortcuts {
+  position: relative;
+  overflow-x: scroll;
+  height: 3em;
+  color: white;
+}
+
+.app-shortcuts .container,
+.app-list .container {
+  position: absolute;
+  height: 3em;
+  width: 3em;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.app-shortcuts .container .indicator {
+  position: absolute;
+  transition: all 0.3s;
+  background-color: turquoise;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: 0.2em;
+  transform: translateY(0.2em);
+}
+
+.app-shortcuts .container.active .indicator {
+  transform: translateY(0);
+}
+
+.app-shortcuts i {
+  position: absolute;
+  font-size: 1.5em;
+}
+
+.app-shortcuts .container:hover,
+.app-list .container:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.app-shortcuts .windows-container {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  width: 6em;
+  visibility: hidden;
+  cursor: default;
+  text-align: center;
+  left: 50%;
+  padding: 0.2em 0.1em;
+}
+
+.app-shortcuts .container:hover .windows-container {
+  visibility: visible;
 }

@@ -111,8 +111,16 @@ i {
   height: 3em;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 999998;
+  z-index: 999997;
   backdrop-filter: blur(2px);
+}
+
+#taskbar .low {
+  z-index: 999998;
+}
+
+#taskbar .high {
+  z-index: 999999;
 }
 
 .app-list {
@@ -121,7 +129,6 @@ i {
   color: white;
   cursor: pointer;
   transition: background-color 0.2s;
-  outline: 2px solid red;
 }
 
 .app-list i {
@@ -141,7 +148,14 @@ i {
   height: 3em;
   width: 3em;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+}
+
+.not-being-corrected {
+  transition: background-color 0.2s, color 0.2s, transform none;
+}
+
+.being-corrected {
+  transition: background-color 0.2s, color 0.2s, transform 0.3s;
 }
 
 .app-shortcuts .container .indicator {

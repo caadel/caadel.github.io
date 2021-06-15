@@ -1,12 +1,13 @@
 // import OpenApps from './modules/open-apps.js'
 
 // Init
-let templates, desktop, availableApps, fontSize
-async function init() {
+let templates, desktop, fontSize, globalData
+function init(dataObject) {
+  globalData = dataObject
+
   templates = document.createElement('template')
-  templates.innerHTML = await (await fetch('templates.html')).text()
+  templates.innerHTML = dataObject.templates
   desktop = document.getElementById('desktop')
-  availableApps = await (await fetch('apps.json')).json()
   fontSize = parseInt(
     window.getComputedStyle(desktop, null).getPropertyValue('font-size')
   )
@@ -46,9 +47,9 @@ function createWindow(appName) {
   const windowClose = windowHeader.querySelector('.close')
 
   // Get app icon html code (font awesome icon)
-  windowIcon.innerHTML = availableApps[appName].icon
+  windowIcon.innerHTML = globalData.availableApps[appName].icon
 
-  windowTitle.innerHTML = `<h4>${availableApps[appName].name}</h4>`
+  windowTitle.innerHTML = `<h4>${globalData.availableApps[appName].name}</h4>`
 
   windowIcon.onmousedown = dragging
   windowTitle.onmousedown = dragging

@@ -1,6 +1,6 @@
 import WindowHandler from './windows.js'
 
-let taskbarShortcuts, template, fontSize, globalData, shortcutWidth
+let taskbarShortcuts, template, fontSize, globalData, shortcutHeight
 let currentOffset = 1
 
 function init(dataObject) {
@@ -14,11 +14,8 @@ function init(dataObject) {
   templates.innerHTML = dataObject.templates
   template = templates.content.querySelector('#app-shortcut-template')
 
-  fontSize = parseInt(
-    window.getComputedStyle(desktop, null).getPropertyValue('font-size')
-  )
-
-  shortcutWidth = fontSize * 3
+  fontSize = globalData.fontSize
+  shortcutHeight = globalData.taskbarHeight
 
   // Add icons to taskbar (TODO: read order from stored settings!)
 
@@ -97,12 +94,12 @@ function addAppToTaskbar(appName) {
 
       // Determine the closest place to drop the shortcut
       let closestPlaceToDrop = 1
-      let diff = shortcutWidth
+      let diff = shortcutHeight
       let smallestDiff = Number.MAX_VALUE
 
       //TODO: change the loop to be from settings (num of apps in taskbar)
       for (let i = 1; i <= numOfAppsInTaskbar; i++) {
-        let testPos = i * shortcutWidth + shortcutWidth * 0.5
+        let testPos = i * shortcutHeight + shortcutHeight * 0.5
         diff = Math.abs(currPos - testPos)
 
         if (diff <= smallestDiff) {
@@ -121,7 +118,7 @@ function addAppToTaskbar(appName) {
       currPos = moveEvent.clientX
 
       // Checking for shortcut place swapping when moving
-      swapPlaceUpperBound = currPos / shortcutWidth
+      swapPlaceUpperBound = currPos / shortcutHeight
       if (Number.isInteger(swapPlaceUpperBound)) {
         if (
           swapPlaceUpperBound <= numOfAppsInTaskbar &&
@@ -175,7 +172,7 @@ function addAppToTaskbar(appName) {
 
       // fontSize * 1.5 => offsets half of the width of the shortcut element
       let newCalcPos = currPos - fontSize * 1.5
-      if (newCalcPos > shortcutWidth) {
+      if (newCalcPos > shortcutHeight) {
         container.style.transform = `translateX(${newCalcPos}px)`
       }
 
@@ -211,7 +208,7 @@ function moveShortCut(container, position) {
   container.classList.add('being-corrected', 'low')
   container.classList.remove('not-being-corrected', 'high')
 
-  container.style.transform = `translateX(${position * shortcutWidth}px)`
+  container.style.transform = `translateX(${position * shortcutHeight}px)`
 }
 
 export default {

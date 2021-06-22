@@ -1,10 +1,9 @@
 // import OpenApps from './modules/open-apps.js'
 
-// Init
+// Init the windows module
 let templates, desktop, fontSize, globalData
 function init(dataObject) {
   globalData = dataObject
-
   templates = document.createElement('template')
   templates.innerHTML = dataObject.templates
   desktop = document.getElementById('desktop')
@@ -47,7 +46,7 @@ function createWindow(appName) {
   const windowHeader = windowElement.querySelector('.header')
   const windowIcon = windowHeader.querySelector('.icon')
   const windowTitle = windowHeader.querySelector('.title')
-  const windowMinimize = windowHeader.querySelector('.minimize')
+  // const windowMinimize = windowHeader.querySelector('.minimize')
   const windowFullscreen = windowHeader.querySelector('.fullscreen')
   const windowClose = windowHeader.querySelector('.close')
   const resizeBtn = windowElement.querySelector('.resizer')
@@ -83,18 +82,16 @@ function createWindow(appName) {
     document.onmouseup = () => {
       document.onmouseup = null
       document.onmousemove = null
-
       windowIcon.style.cursor = 'grab'
       windowTitle.style.cursor = 'grab'
 
       // Check if window header is under taskbar, move up if true
       const distanceToTop = windowElement.offsetTop
 
-      if (distanceToTop < 0) {
+      if (distanceToTop < 0)
         windowElement.style.top = `${
           parseInt(windowElement.style.top) - distanceToTop
         }px`
-      }
 
       const taskbarHeaderHeight = fontSize * 5
       const browserHeight = window.innerHeight
@@ -106,19 +103,27 @@ function createWindow(appName) {
         const heightToMoveUpTo = browserHeight - taskbarHeaderHeight
         windowElement.style.top = `${heightToMoveUpTo}px`
       }
+
+      // Check if window is out of bounds on the X-axis, move in if true
+      // Left
+      if (windowElement.offsetLeft < 0) windowElement.style.left = 0
+      // Right
+      if (windowElement.offsetLeft + contentWidth > window.innerWidth)
+        windowElement.style.left = `${window.innerWidth - contentWidth}px`
     }
 
-    // call a function whenever the cursor moves:
+    // Called when cursor moves during drag
     document.onmousemove = (moveEvent) => {
+      moveEvent.preventDefault()
       windowIcon.style.cursor = 'grabbing'
       windowTitle.style.cursor = 'grabbing'
-      moveEvent = moveEvent || windowElement.event
-      moveEvent.preventDefault()
+
       // calculate the new cursor position:
       pos1 = pos3 - moveEvent.clientX
       pos2 = pos4 - moveEvent.clientY
       pos3 = moveEvent.clientX
       pos4 = moveEvent.clientY
+
       // set the element's new position:
       windowElement.style.top = `${windowElement.offsetTop - pos2}px`
       windowElement.style.left = `${windowElement.offsetLeft - pos1}px`
@@ -137,28 +142,51 @@ function createWindow(appName) {
   function resizeDragging(dragEvent) {
     dragEvent.preventDefault()
 
-    // Get the mouse cursor position at startup:
+    // Get the mouse cursor position at startup
     pos3 = dragEvent.clientX
     pos4 = dragEvent.clientY
 
-    // Stop moving when mouse button is released:
+    // Stop moving when mouse button is released
     document.onmouseup = () => {
       document.onmouseup = null
       document.onmousemove = null
-
       resizeBtn.style.cursor = 'grab'
+
+      // Check if app window bounds are outside of browser window, resize to fit screen if so
+      const rightsideXPos = windowElement.offsetLeft + contentWidth
+      const bottomsideYPos = windowElement.offsetTop + contentHeight
+
+      const isOutOfBoundsX = rightsideXPos > window.innerWidth
+      const isOutOfBoundsY =
+        window.innerHeight -
+          globalData.taskbarHeight -
+          windowHeader.scrollHeight -
+          bottomsideYPos <
+        0
+
+      // Resize width
+      if (isOutOfBoundsX) {
+        const outOfBoundsX = rightsideXPos - window.innerWidth
+        contentWidth -= outOfBoundsX
+
+        windowContent.style.width = `${contentWidth}px`
+      }
+
+      // Resize height
+      if (isOutOfBoundsY) {
+        contentHeight =
+          window.innerHeight -
+          windowElement.offsetTop -
+          windowHeader.scrollHeight -
+          globalData.taskbarHeight
+
+        windowContent.style.height = `${contentHeight}px`
+      }
     }
 
-    // call a function whenever the cursor moves:
+    // Called when cursor moves during drag
     document.onmousemove = (moveEvent) => {
       moveEvent.preventDefault()
-
-      // TODO: limit resize to not be able to be drawn larger than the screens width
-      // let rightsideXPos = windowElement.offsetLeft + contentWidth + 1
-      // console.log(window.innerWidth - rightsideXPos)
-      // if (window.innerWidth - rightsideXPos < 0) return
-
-      // TODO: limit resize to not be able to make the window smaller than a min size
       resizeBtn.style.cursor = 'grabbing'
 
       // calculate the new cursor position:

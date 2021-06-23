@@ -1,4 +1,4 @@
-// import OpenApps from './modules/open-apps.js'
+import OpenWindows from './open-windows.js'
 
 // Init the windows module
 let templates, desktop, fontSize, globalData
@@ -22,12 +22,10 @@ function createWindow(appName) {
     .querySelector('#window-template')
     .content.cloneNode(true)
 
-  // TODO: get id number from openApps later
   const windowElement = windowTemplate.querySelector('.window')
-  windowElement.id = `window_${1}`
-  // TODO: window.style.zIndex = id from openApps
+  OpenWindows.add(appName, windowElement)
 
-  // Add app content to window, TODO: get id from OpenApps or app icons
+  // Add app content to window, TODO: get id from OpenWindows or app icons
   const appHTML = appTemplate.content.cloneNode(true)
   const windowContent = windowElement.querySelector('.content')
   windowContent.appendChild(appHTML)
@@ -63,7 +61,7 @@ function createWindow(appName) {
 
   // TODO: Whenever the window is clicked, move it to the top
   windowElement.addEventListener('click', () => {
-    // OpenApps.setActiveWindow(selectedApp.name, elmnt)
+    OpenWindows.setActiveWindow(appName, windowElement)
   })
 
   function windowDragging(dragEvent) {
@@ -72,7 +70,7 @@ function createWindow(appName) {
     dragEvent.preventDefault()
 
     // TODO: Move window to top
-    // OpenApps.setActiveWindow(selectedApp.name, elmnt)
+    // OpenWindows.setActiveWindow(selectedApp.name, elmnt)
 
     // Get the mouse cursor position at startup:
     pos3 = dragEvent.clientX
@@ -135,8 +133,7 @@ function createWindow(appName) {
 
   // Close window
   windowClose.addEventListener('click', () => {
-    // OpenApps.remove(selectedApp.name, elmnt.id)
-    windowElement.remove()
+    OpenWindows.removeWindow(appName, windowElement)
   })
 
   function resizeDragging(dragEvent) {
@@ -204,7 +201,7 @@ function createWindow(appName) {
     }
   }
 
-  // OpenApps.add(selectedApp.name, elmnt)
+  // OpenWindows.add(selectedApp.name, elmnt)
 
   // Add the element to the screen
   desktop.appendChild(windowElement)

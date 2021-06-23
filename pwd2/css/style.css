@@ -173,15 +173,19 @@ i {
   position: absolute;
   transition: all 0.3s;
   background-color: turquoise;
-  width: 100%;
+  width: 2.86em;
   bottom: 0;
-  left: 0;
+  left: 0.07em;
   height: 0.2em;
   transform: translateY(0.2em);
 }
 
-.app-shortcuts .container.active .indicator {
+.app-shortcuts .container.open .indicator {
   transform: translateY(0);
+}
+
+.app-shortcuts .container.active {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .app-shortcuts i {

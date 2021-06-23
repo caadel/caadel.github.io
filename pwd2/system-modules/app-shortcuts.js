@@ -48,6 +48,8 @@ function addAppToTaskbar(appName) {
   const container = template.content.cloneNode(true).querySelector('.container')
   taskbarShortcuts.appendChild(container)
 
+  container.id = appName
+
   container.querySelector('.icon').innerHTML =
     globalData.availableApps[appName].icon
   container.style.transform = `translateX(${3 * currentOffset}em)`
@@ -189,7 +191,7 @@ function addAppToTaskbar(appName) {
   // TODO: OpenApps should do the things below
   let rows = 1 // --> floor(number of open windows / 3)
   openWindowsContainer.style.transform = `translate(-50%, -${rows + 0.4}em)`
-  if (appName === 'calculator') container.classList.add('active')
+  // if (appName === 'calculator') container.classList.add('active')
 
   return container
 }

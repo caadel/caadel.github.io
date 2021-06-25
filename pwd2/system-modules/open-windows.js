@@ -13,10 +13,13 @@
 const windows = new Map()
 
 let activeWindow,
-  activeAppName = null
+  activeAppName,
+  prevActiveApp = null
 
-let index,
-  numOfWindows = 0
+let windowIndex = 0
+let numOfWindowsOpened = 0
+
+let windowStack = []
 
 /**
  * Tracks a new window and adds an ID to it
@@ -26,31 +29,34 @@ let index,
  */
 function add(name, window) {
   const openOfSameApp = windows.get(name)
-  window.id = `window_${numOfWindows}`
+  window.id = `window_${numOfWindowsOpened}`
   if (openOfSameApp === undefined) windows.set(name, [window])
   else {
     openOfSameApp.push(window)
     windows.set(name, openOfSameApp)
   }
-  numOfWindows++
+  numOfWindowsOpened++
   setActiveWindow(name, window)
 }
 
 function setActiveWindow(name, window) {
-  // TODO: update window styles? (header color/transparency?)
+  // Whenever the window is clicked, move it to the top
+  if (activeWindow !== window) {
+    prevActiveApp = activeAppName
+    window.style.zIndex = ++windowIndex
+    activeWindow = window
+    activeAppName = name
+    windowStack.push({ name: name, window: window })
 
-  // TODO: zIndex
+    // TODO: update window styles? (header color/transparency?)
+    let prevActiveWindow = document.querySelector('.active-window')
+    if (prevActiveWindow !== null)
+      prevActiveWindow.classList.remove('active-window')
+    window.classList.add('active-window')
+  }
 
   // Update shortcuts in taskbar
-  if (name !== activeAppName) updateShortcutStyle(name, true, true)
-
-  /**
-   * TODO: removing a window if the app has more than one
-   * open instance should remove "active" class, currently
-   * the shortcut style does not change
-   */
-
-  checkEmptyWindowArrayForApp(name)
+  if (windows.get(name).length > 0) updateShortcutStyle(name, true, true)
 }
 
 /**
@@ -70,18 +76,14 @@ function updateShortcutStyle(name, isOpen, isActive) {
     if (isActive) {
       shortcut.classList.add('active')
 
-      if (activeAppName !== null) {
+      if (prevActiveApp !== activeAppName && prevActiveApp != undefined) {
         document
           .querySelector('#taskbar')
-          .querySelector(`#${activeAppName}`)
+          .querySelector(`#${prevActiveApp}`)
           .classList.remove('active')
       }
-
-      activeAppName = name
-    }
-  } else {
-    shortcut.classList.remove('open', 'active')
-  }
+    } else shortcut.classList.remove('active')
+  } else shortcut.classList.remove('open', 'active')
 }
 
 function removeWindow(name, window) {
@@ -89,15 +91,35 @@ function removeWindow(name, window) {
     return el.id == window.id
   })
 
+  /**
+   * When a window is removed, go back in the window stack to
+   * select the last active window, and make it active again.
+   */
+  activeAppName = null
+  activeWindow = null
+  let newActiveWindow = null
+  windowStack.pop()
+  for (let i = windowStack.length - 1; i >= 0; i--) {
+    newActiveWindow = windowStack.pop()
+
+    let test = document.querySelector(`#${newActiveWindow.window.id}`)
+    console.log(test)
+    if (test != null) {
+      setActiveWindow(newActiveWindow.name, newActiveWindow.window)
+      break
+    }
+  }
+
+  // Remove the window and update the shortcuts
   windows.get(name).splice(removeIndex, 1)
 
-  checkEmptyWindowArrayForApp(name)
+  if (windows.get(name).length > 0) updateShortcutStyle(name, true, false)
+  else updateShortcutStyle(name, false, false)
 
   window.remove()
-}
 
-function checkEmptyWindowArrayForApp(name) {
-  if (windows.get(name).length === 0) updateShortcutStyle(name, false, false)
+  // Clear the window stack if necessary
+  if (windows.size === 0) windowStack = []
 }
 
 export default {

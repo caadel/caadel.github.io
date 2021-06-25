@@ -59,8 +59,13 @@ function createWindow(appName) {
 
   resizeBtn.onmousedown = resizeDragging
 
-  // TODO: Whenever the window is clicked, move it to the top
-  windowElement.addEventListener('click', () => {
+  windowElement.addEventListener('click', (event) => {
+    /**
+     * Guard clause: Prevents giving focus to a window if
+     * for example the "close" button is clicked.
+     */
+    if (event.target.classList.contains('no-focus-on-click')) return
+
     OpenWindows.setActiveWindow(appName, windowElement)
   })
 
@@ -69,8 +74,8 @@ function createWindow(appName) {
 
     dragEvent.preventDefault()
 
-    // TODO: Move window to top
-    // OpenWindows.setActiveWindow(selectedApp.name, elmnt)
+    // Move window to top
+    OpenWindows.setActiveWindow(appName, windowElement)
 
     // Get the mouse cursor position at startup:
     pos3 = dragEvent.clientX
@@ -262,8 +267,8 @@ function createWindow(appName) {
   })
 
   //TODO: determine what background we want on the window content'
-  windowContent.classList.add('white-bg')
-  // windowContent.classList.add('blur-bg')
+  // windowContent.classList.add('white-bg')
+  windowContent.classList.add('blur-bg-2')
 }
 
 export default {

@@ -225,3 +225,59 @@ i {
 .app-shortcuts .container:hover .windows-container {
   visibility: visible;
 }
+
+/* ============== CALCULATOR ============== */
+.calc {
+  font-size: 1.2em;
+  display: grid;
+  height: 100%;
+  gap: 0.15em;
+  grid-template-columns: repeat(4, minmax(3em, auto));
+  grid-template-rows: minmax(5em, auto) repeat(5, minmax(3em, auto));
+}
+
+.calc > button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.75);
+  font-weight: bold;
+  color: inherit;
+}
+
+.calc > [data-number] {
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
+.calc > button:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.calc > .results {
+  background-color: rgba(0, 0, 0, 0.95);
+  grid-column: span 4;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 0.5em;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.calc > .results .previous {
+  font-size: 0.8em;
+}
+
+.calc > .results .current {
+  font-size: 1.5em;
+}
+
+/* TODO */
+.calc > .history {
+  display: none;
+}
+
+.calc > .wide {
+  grid-column: span 2;
+}

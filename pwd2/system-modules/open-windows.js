@@ -2,7 +2,7 @@
  * This script keeps track of:
  *  1. all open apps
  *  2. which windows belong to what app
- *  3. which apps have minimized windows
+ *  3. TODO: which apps have minimized windows
  *
  * This script is used to style app shortcuts
  * according to their windows' states.
@@ -48,11 +48,13 @@ function setActiveWindow(name, window) {
     activeAppName = name
     windowStack.push({ name: name, window: window })
 
-    // TODO: update window styles? (header color/transparency?)
+    // Update window style
     let prevActiveWindow = document.querySelector('.active-window')
     if (prevActiveWindow !== null)
       prevActiveWindow.classList.remove('active-window')
     window.classList.add('active-window')
+
+    // TODO: track open window for keyboard controls
   }
 
   // Update shortcuts in taskbar
@@ -103,7 +105,6 @@ function removeWindow(name, window) {
     newActiveWindow = windowStack.pop()
 
     let test = document.querySelector(`#${newActiveWindow.window.id}`)
-    console.log(test)
     if (test != null) {
       setActiveWindow(newActiveWindow.name, newActiveWindow.window)
       break

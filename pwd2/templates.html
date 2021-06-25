@@ -3,11 +3,13 @@
     <div class="header blur-bg">
       <span class="icon"><i class="fas fa-infinity"></i></span>
       <span class="title"><h4>title</h4></span>
-      <span class="action minimize"
-        ><i class="fas fa-long-arrow-alt-down"></i
+      <span class="action minimize no-focus-on-click"
+        ><i class="fas fa-long-arrow-alt-down no-focus-on-click"></i
       ></span>
       <span class="action fullscreen"><i class="fas fa-expand"></i></span>
-      <span class="action close"><i class="fas fa-times"></i></span>
+      <span class="action close no-focus-on-click"
+        ><i class="fas fa-times no-focus-on-click"></i
+      ></span>
     </div>
     <div class="content"></div>
     <div class="resizer"><i class="fas fa-expand-alt"></i></div>
@@ -26,9 +28,34 @@
 </template>
 
 <template id="calculator">
-  <p>Content, CALCULATOR</p>
-  <p>Content, CALCULATOR</p>
-  <p>Content, CALCULATOR</p>
+  <div class="calc">
+    <div class="results">
+      <div class="previous">12</div>
+      <div class="current">89</div>
+    </div>
+
+    <button data-op>CE</button>
+    <button data-op>C</button>
+    <button data-op>&#8592;</button>
+    <button data-op>÷</button>
+    <button data-number>7</button>
+    <button data-number>8</button>
+    <button data-number>9</button>
+    <button data-op>x</button>
+    <button data-number>4</button>
+    <button data-number>5</button>
+    <button data-number>6</button>
+    <button data-op>-</button>
+    <button data-number>1</button>
+    <button data-number>2</button>
+    <button data-number>3</button>
+    <button data-op>+</button>
+    <button data-op>.</button>
+    <button data-number>0</button>
+    <button data-op class="wide">=</button>
+
+    <div class="history"></div>
+  </div>
 </template>
 
 <template id="calendar"> Content, CALENDAR </template>

@@ -1,8 +1,6 @@
 class App {
   constructor(a) {
     this.a = a
-
-    this.clearAll()
   }
 
   keyboardInput(key) {}

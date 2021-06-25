@@ -62,6 +62,7 @@ i {
   -webkit-box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
   color: rgb(156, 156, 156);
+  overflow: hidden;
 }
 
 .hide {
@@ -112,6 +113,7 @@ i {
 .window > .content {
   margin-left: auto;
   margin-right: auto;
+  overflow: auto;
 }
 
 .window > .resizer {
@@ -254,7 +256,8 @@ i {
 }
 
 .calc > .results {
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: rgba(0, 0, 0, 0.25);
+  max-width: 100%;
   grid-column: span 4;
   display: flex;
   align-items: flex-end;
@@ -263,14 +266,17 @@ i {
   padding: 0.5em;
   word-wrap: break-word;
   word-break: break-all;
+  width: 13em;
 }
 
-.calc > .results .previous {
+.calc > .results [data-previous] {
   font-size: 0.8em;
+  min-height: 1em;
 }
 
-.calc > .results .current {
+.calc > .results [data-current] {
   font-size: 1.5em;
+  text-align: right;
 }
 
 /* TODO */

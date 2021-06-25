@@ -30,13 +30,13 @@
 <template id="calculator">
   <div class="calc">
     <div class="results">
-      <div class="previous">12</div>
-      <div class="current">89</div>
+      <div data-previous></div>
+      <div data-current>0</div>
     </div>
 
-    <button data-op>CE</button>
-    <button data-op>C</button>
-    <button data-op>&#8592;</button>
+    <button data-clear-current>CE</button>
+    <button data-clear-full>C</button>
+    <button data-clear-one>DEL</button>
     <button data-op>÷</button>
     <button data-number>7</button>
     <button data-number>8</button>
@@ -50,9 +50,9 @@
     <button data-number>2</button>
     <button data-number>3</button>
     <button data-op>+</button>
-    <button data-op>.</button>
+    <button data-number>.</button>
     <button data-number>0</button>
-    <button data-op class="wide">=</button>
+    <button data-equals class="wide">=</button>
 
     <div class="history"></div>
   </div>

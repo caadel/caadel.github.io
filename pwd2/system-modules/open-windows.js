@@ -7,7 +7,7 @@
  * This script is used to style app shortcuts
  * according to their windows' states.
  */
-
+import Apps from './apps.js'
 // import Settings from './settings.js'
 
 const windows = new Map()
@@ -37,6 +37,8 @@ function add(name, window) {
   }
   numOfWindowsOpened++
   setActiveWindow(name, window)
+
+  Apps.createApp(name, window.id)
 }
 
 function setActiveWindow(name, window) {

@@ -23,7 +23,6 @@ function createWindow(appName) {
     .content.cloneNode(true)
 
   const windowElement = windowTemplate.querySelector('.window')
-  OpenWindows.add(appName, windowElement)
 
   // Add app content to window, TODO: get id from OpenWindows or app icons
   const appHTML = appTemplate.content.cloneNode(true)
@@ -206,10 +205,9 @@ function createWindow(appName) {
     }
   }
 
-  // OpenWindows.add(selectedApp.name, elmnt)
-
   // Add the element to the screen
   desktop.appendChild(windowElement)
+  OpenWindows.add(appName, windowElement)
 
   // Set initial centered position
   let initialYPos =

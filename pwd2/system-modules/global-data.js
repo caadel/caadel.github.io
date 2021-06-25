@@ -1,3 +1,5 @@
+import Apps from './apps.js'
+
 class DataObject {
   constructor(templates, availableApps, fontSize, taskbarHeight) {
     this.templates = templates
@@ -19,7 +21,7 @@ async function init() {
 
   templates = await (await fetch('templates.html')).text()
 
-  availableApps = await (await fetch('app-list.json')).json()
+  availableApps = Apps.appList
 
   DO = new DataObject(templates, availableApps, fontSize, taskbarHeight)
 }

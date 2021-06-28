@@ -1,0 +1,58 @@
+/* ============== CALCULATOR ============== */
+.calc {
+  font-size: 1.2em;
+  display: grid;
+  height: 100%;
+  gap: 0.15em;
+  grid-template-columns: repeat(4, minmax(3em, auto));
+  grid-template-rows: minmax(5em, auto) repeat(5, minmax(3em, auto));
+}
+
+.calc > button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.75);
+  font-weight: bold;
+  color: inherit;
+}
+
+.calc > [data-number] {
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
+.calc > button:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.calc > .results {
+  background-color: rgba(0, 0, 0, 0.25);
+  max-width: 100%;
+  grid-column: span 4;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 0.5em;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.calc > .results [data-previous] {
+  font-size: 0.8em;
+  min-height: 1em;
+}
+
+.calc > .results [data-current] {
+  font-size: 1.5em;
+  text-align: right;
+}
+
+/* TODO */
+.calc > .history {
+  display: none;
+}
+
+.calc > .wide {
+  grid-column: span 2;
+}

@@ -42,6 +42,8 @@ function init(dataObject) {
     container.classList.add(`pos-${i}`)
     i++
   }
+
+  initAppList()
 }
 
 function addAppToTaskbar(appName) {
@@ -196,8 +198,48 @@ function addAppToTaskbar(appName) {
   return container
 }
 
-// TODO
-function removeAppFromTaskbar(appName) {}
+function removeAppFromTaskbar(appName) {
+  // TODO
+}
+
+function initAppList() {
+  const appListBtn = document
+    .querySelector('.app-list')
+    .querySelector('.container')
+
+  const appListContainer = document.querySelector('#app-list')
+
+  const searchBox = appListContainer.querySelector('#app-list-search')
+
+  const appList = appListContainer.getElementsByTagName('ul')[0]
+
+  appListBtn.addEventListener('click', () => {
+    appListContainer.classList.toggle('hidden')
+  })
+
+  for (const appName in globalData.availableApps) {
+    const app = globalData.availableApps[appName]
+
+    const li = document.createElement('li')
+    li.innerHTML = `${app.icon} <span>${app.name}</span>`
+
+    appList.appendChild(li)
+
+    li.addEventListener('click', () => {
+      WindowHandler.createWindow(appName)
+    })
+  }
+
+  searchBox.addEventListener('input', () => {
+    for (const appNode of appList.childNodes) {
+      const text = appNode.childNodes[2].innerText
+
+      if (text.toUpperCase().indexOf(searchBox.value.toUpperCase()) > -1)
+        appNode.style.display = 'block'
+      else appNode.style.display = 'none'
+    }
+  })
+}
 
 /**
  * Moves a shortcut to a new positionin the taskbar,

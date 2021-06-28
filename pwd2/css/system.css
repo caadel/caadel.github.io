@@ -1,3 +1,4 @@
+/* ============== GENERAL STYLES ============== */
 :root {
   --window-border-blue: rgb(17, 0, 80);
 }
@@ -130,11 +131,15 @@ i {
 }
 
 /* ============== TASKBAR ============== */
-#taskbar {
+#navigation-container {
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 999995;
   width: 100vw;
+}
+
+#taskbar {
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 999997;
 }
@@ -150,7 +155,6 @@ i {
 .app-list {
   width: 3em;
   color: white;
-  cursor: pointer;
   transition: background-color 0.2s;
 }
 
@@ -228,61 +232,64 @@ i {
   visibility: visible;
 }
 
-/* ============== CALCULATOR ============== */
-.calc {
-  font-size: 1.2em;
-  display: grid;
-  height: 100%;
-  gap: 0.15em;
-  grid-template-columns: repeat(4, minmax(3em, auto));
-  grid-template-rows: minmax(5em, auto) repeat(5, minmax(3em, auto));
+/* ============== APP LIST MENU ============== */
+#app-list {
+  color: white;
+  height: 19.5em;
+  width: fit-content;
+  position: absolute;
+  display: block;
+  bottom: 3em;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: default;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  transition: bottom 0.3s;
 }
 
-.calc > button {
+#app-list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent; /* make scrollbar transparent*/
+}
+
+#app-list.hidden {
+  bottom: -20em;
+}
+
+#app-list ul i {
+  position: initial;
+  top: 0;
+  left: 0;
+  transform: none;
+  margin-right: 0.5em;
+}
+
+#app-list li {
   cursor: pointer;
+  padding: 0.8em;
+  transition: 0.2s background-color;
+}
+
+#app-list li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+#app-list-search {
+  height: 2.5em;
+  padding: 0.75em;
   outline: none;
+  background-color: rgba(0, 0, 0, 0.85);
   border: none;
-  background-color: rgba(0, 0, 0, 0.75);
-  font-weight: bold;
-  color: inherit;
+  color: white;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
-.calc > [data-number] {
-  background-color: rgba(0, 0, 0, 0.95);
-}
-
-.calc > button:hover {
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.calc > .results {
-  background-color: rgba(0, 0, 0, 0.25);
-  max-width: 100%;
-  grid-column: span 4;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  flex-direction: column;
-  padding: 0.5em;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.calc > .results [data-previous] {
-  font-size: 0.8em;
-  min-height: 1em;
-}
-
-.calc > .results [data-current] {
-  font-size: 1.5em;
-  text-align: right;
-}
-
-/* TODO */
-.calc > .history {
-  display: none;
-}
-
-.calc > .wide {
-  grid-column: span 2;
+#app-list-search:focus {
+  background-color: rgba(46, 46, 46, 0.85);
 }

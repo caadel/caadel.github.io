@@ -15,7 +15,9 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/system.css" />
+    <link rel="stylesheet" href="css/apps.css" />
+
     <script src="index.js" type="module" defer></script>
     <!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"> -->
     <title>PWD2: Private Web Desktop 2</title>
@@ -26,22 +28,28 @@
 
     <main id="desktop"></main>
 
-    <nav id="taskbar" class="blur-bg">
-      <span class="app-list">
-        <div class="container">
-          <i class="fas fa-bars"></i>
-        </div>
-      </span>
-      <span class="app-shortcuts"></span>
-      <span class="system-apps">
-        <span class="date-time">
-          <span class="clock"></span>
-          <span class="date"></span>
+    <div id="navigation-container">
+      <nav class="menu blur-bg hidden" id="app-list">
+        <input type="text" id="app-list-search" placeholder="Search apps" />
+        <ul></ul>
+      </nav>
+      <nav id="taskbar" class="blur-bg">
+        <span class="app-list">
+          <div class="container">
+            <i class="fas fa-bars"></i>
+          </div>
         </span>
-        <span class="expand">
-          <i class="fas fa-expand"></i>
+        <span class="app-shortcuts"></span>
+        <span class="system-apps">
+          <span class="date-time">
+            <span class="clock"></span>
+            <span class="date"></span>
+          </span>
+          <span class="expand">
+            <i class="fas fa-expand"></i>
+          </span>
         </span>
-      </span>
-    </nav>
+      </nav>
+    </div>
   </body>
 </html>

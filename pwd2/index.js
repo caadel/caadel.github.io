@@ -14,4 +14,4 @@ Windows.init(DO)
 Apps.init(DO)
 
 // Testing adding windows manually
-Windows.createWindow('calculator')
+// Windows.createWindow('calculator')

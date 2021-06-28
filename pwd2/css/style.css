@@ -266,7 +266,6 @@ i {
   padding: 0.5em;
   word-wrap: break-word;
   word-break: break-all;
-  width: 13em;
 }
 
 .calc > .results [data-previous] {

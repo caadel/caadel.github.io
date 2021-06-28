@@ -7,6 +7,9 @@ class App {
     this.clearAll()
   }
 
+  /**
+   * Clears the class' variables.
+   */
   clear() {
     this.currentOperand = '0'
     this.previousOperand = ''
@@ -16,24 +19,32 @@ class App {
     this.resultString = ''
   }
 
-  clearPrev() {
-    this.previousOperand = ''
-
-    this.updateDOM()
-  }
-
+  /**
+   * Clears the data displayed in the calculator.
+   * Updates the DOM.
+   */
   clearAll() {
     this.clear()
 
     this.updateDOM()
   }
 
+  /**
+   * Clears the current operand (bottom row) only.
+   * Updates the DOM.
+   */
   clearCurrent() {
     this.currentOperand = '0'
 
     this.updateDOM()
   }
 
+  /**
+   * Deletes the last digit of the current operand (bottom row).
+   * Updates the DOM.
+   *
+   * @returns void
+   */
   delete() {
     // Treat result as read-only
     if (this.lastActionWasEquals) return
@@ -46,20 +57,39 @@ class App {
     this.updateDOM()
   }
 
+  /**
+   * Appends an input number to the current operand (bottom row).
+   * Updates the DOM.
+   *
+   * @param {Number} number - the digit to add.
+   * @returns void
+   */
   appendNumToString(number) {
     // Prevent multiple dots in the number
     if (number === '.' && this.currentOperand.includes('.')) return
 
+    // Replace the lonesome "0" if present
+    if (this.currentOperand === '0') this.currentOperand = ''
+
+    // Determine if the current number should be replaced or not
     if (this.lastActionWasEquals) {
       this.currentOperand = number.toString()
       this.lastActionWasEquals = false
-    } else
+    } else {
       this.currentOperand = this.currentOperand.toString() + number.toString()
+    }
 
     this.updateDOM()
   }
 
-  chooseOperation(operation) {
+  /**
+   * Sets the operation to apply to the next calculation.
+   * Updates the DOM.
+   *
+   * @param {String} operation - the operation to apply/set.
+   * @returns void
+   */
+  setOperation(operation) {
     if (this.currentOperand === '0' || this.currentOperand === '') return
 
     if (this.previousOperand !== '') this.calculate(false)
@@ -71,34 +101,33 @@ class App {
     this.updateDOM()
   }
 
+  /**
+   * Performs a calculation.
+   * Updates the DOM.
+   *
+   * @param {Boolean} equalsBtnClicked - true if the last button pressed was "=".
+   * @returns void
+   */
   calculate(equalsBtnClicked) {
-    // If equals was clicked, display the entire calculation
+    const prev = parseFloat(this.previousOperand)
+    const curr = parseFloat(this.currentOperand)
+
+    const notNumber = isNaN(prev) || isNaN(curr)
+
+    // If equals was clicked, display the calculation
     if (equalsBtnClicked) {
       this.lastActionWasEquals = true
-      if (this.lastActionWasEquals) {
-        this.resultString = parseFloat(this.currentOperand)
 
-        /**
-         * TODO: fix the following:
-         * 1. click number
-         * 2. click operand
-         * 3. click number
-         * 4. click equals
-         * prev only displays the result string, "this.currentOperand"
-         */
-      } else {
+      if (notNumber) this.resultString = `${this.currentOperand} = `
+      else
         this.resultString = `${parseFloat(this.previousOperand)} ${
           this.operation
         } ${parseFloat(this.currentOperand)} =`
-      }
     }
 
     this.computation = null
 
-    const prev = parseFloat(this.previousOperand)
-    const curr = parseFloat(this.currentOperand)
-
-    if (isNaN(prev) || isNaN(curr)) {
+    if (notNumber) {
       this.updateDOM()
       return
     }
@@ -122,7 +151,6 @@ class App {
         return
     }
 
-    this.computation = this.round(this.computation)
     this.currentOperand = this.computation
     this.operation = null
     this.previousOperand = ''
@@ -130,9 +158,13 @@ class App {
     this.updateDOM()
   }
 
+  /**
+   * Formats a number to have comma separation.
+   *
+   * @param {Number} number - the number to format.
+   * @returns the formatted string to display
+   */
   formatNumber(number) {
-    number = this.round(number)
-
     const stringNum = number.toString()
     const intDigits = parseFloat(stringNum.split('.')[0])
     const decimalDigits = stringNum.split('.')[1]
@@ -151,13 +183,11 @@ class App {
     else return integerDOMDisplay
   }
 
+  /**
+   * Updates the DOM.
+   */
   updateDOM() {
-    if (this.currentOperand.toString().slice(-1).includes('.')) {
-      // Make the trailing dot visible
-      this.currTxt.innerText = `${this.formatNumber(this.currentOperand)}.`
-    } else {
-      this.currTxt.innerText = this.formatNumber(this.currentOperand)
-    }
+    this.currTxt.innerText = this.formatNumber(this.currentOperand)
 
     if (this.operation != null) {
       // There is an active operation
@@ -168,6 +198,7 @@ class App {
       // No active operation
       if (this.lastActionWasEquals) {
         // Display results
+
         this.prevTxt.innerText = this.resultString
       } else {
         // Clear prev
@@ -176,15 +207,18 @@ class App {
     }
   }
 
-  round(number) {
-    return Math.round((parseFloat(number) + Number.EPSILON) * 1000000) / 1000000
+  keyboardInput(key) {
+    // TODO
   }
-
-  keyboardInput(key) {}
 }
 
 const instances = new Map()
 
+/**
+ * Creates a new instance of the app.
+ *
+ * @param {String} windowID - the id of the window the app instance is opened in.
+ */
 function newInstance(windowID) {
   // Calculator buttons
   const window = document.getElementById(windowID).querySelector('.content')
@@ -210,7 +244,7 @@ function newInstance(windowID) {
 
   opBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      calc.chooseOperation(btn.innerText)
+      calc.setOperation(btn.innerText)
     })
   })
 
@@ -231,6 +265,12 @@ function newInstance(windowID) {
   })
 }
 
+/**
+ * Passes a keyboard input to an instance of the app.
+ *
+ * @param {String} windowID - the window id of the app to receive the input.
+ * @param {Strig} key - the input key.
+ */
 function keyboardInput(windowID, key) {
   instances.get(windowID).keyboardInput(key)
 }

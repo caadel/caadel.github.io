@@ -8,6 +8,11 @@ class App {
 
 const instances = new Map()
 
+/**
+ * Creates a new instance of the app.
+ *
+ * @param {String} windowID - the id of the window the app instance is opened in.
+ */
 function newInstance(windowID) {
   const window = document.getElementById(windowID).querySelector('.content')
 
@@ -16,6 +21,12 @@ function newInstance(windowID) {
   instances.set(windowID, instance)
 }
 
+/**
+ * Passes a keyboard input to an instance of the app.
+ *
+ * @param {String} windowID - the window id of the app to receive the input.
+ * @param {Strig} key - the input key.
+ */
 function keyboardInput(windowID, key) {
   instances.get(windowID).keyboardInput(key)
 }

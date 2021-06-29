@@ -1,7 +1,12 @@
 import OpenWindows from './open-windows.js'
 
-// Init the windows module
 let templates, desktop, fontSize, globalData
+
+/**
+ * Initializes the Windows module.
+ *
+ * @param {Object} dataObject - The initialized "GlobalData" object.
+ */
 function init(dataObject) {
   globalData = dataObject
   templates = document.createElement('template')
@@ -10,6 +15,12 @@ function init(dataObject) {
   fontSize = globalData.fontSize
 }
 
+/**
+ * Creates a new window and adds all window-related functionality to it.
+ *
+ * @param {String} appName - The name of the app to be launched.
+ * @returns void
+ */
 function createWindow(appName) {
   const appTemplate = templates.content.querySelector(`#${appName}`)
   if (appTemplate === null) {
@@ -43,20 +54,17 @@ function createWindow(appName) {
   const windowHeader = windowElement.querySelector('.header')
   const windowIcon = windowHeader.querySelector('.icon')
   const windowTitle = windowHeader.querySelector('.title')
-  // const windowMinimize = windowHeader.querySelector('.minimize')
+  const windowMinimize = windowHeader.querySelector('.minimize')
   const windowFullscreen = windowHeader.querySelector('.fullscreen')
   const windowClose = windowHeader.querySelector('.close')
   const resizeBtn = windowElement.querySelector('.resizer')
+  const resizeBtnX = windowElement.querySelector('.resizer-x')
+  const resizeBtnY = windowElement.querySelector('.resizer-y')
 
   // Get app icon html code (font awesome icon)
   windowIcon.innerHTML = globalData.availableApps[appName].icon
 
   windowTitle.innerHTML = `<h4>${globalData.availableApps[appName].name}</h4>`
-
-  windowIcon.onmousedown = windowDragging
-  windowTitle.onmousedown = windowDragging
-
-  resizeBtn.onmousedown = resizeDragging
 
   windowElement.addEventListener('click', (event) => {
     /**
@@ -67,6 +75,10 @@ function createWindow(appName) {
 
     OpenWindows.setActiveWindow(appName, windowElement)
   })
+
+  // Window move functionality
+  windowIcon.onmousedown = windowDragging
+  windowTitle.onmousedown = windowDragging
 
   function windowDragging(dragEvent) {
     if (isFullscreen) return
@@ -135,14 +147,22 @@ function createWindow(appName) {
     }
   }
 
-  // Close window
-  windowClose.addEventListener('click', () => {
-    OpenWindows.removeWindow(appName, windowElement)
-  })
+  // Window resizing functionality
+  resizeBtn.onmousedown = resizeDragInit
+  resizeBtnX.onmousedown = resizeDragInit
+  resizeBtnY.onmousedown = resizeDragInit
 
-  function resizeDragging(dragEvent) {
+  function resizeDragInit(dragEvent) {
     dragEvent.preventDefault()
+    if (dragEvent.target == resizeBtn) resizeDragging(dragEvent, true, true)
+    else if (dragEvent.target == resizeBtnX)
+      resizeDragging(dragEvent, true, false)
+    else if (dragEvent.target == resizeBtnY)
+      resizeDragging(dragEvent, false, true)
+  }
 
+  // Resize window
+  function resizeDragging(dragEvent, resizeX, resizeY) {
     // Get the mouse cursor position at startup
     pos3 = dragEvent.clientX
     pos4 = dragEvent.clientY
@@ -151,7 +171,6 @@ function createWindow(appName) {
     document.onmouseup = () => {
       document.onmouseup = null
       document.onmousemove = null
-      resizeBtn.style.cursor = 'grab'
 
       // Check if app window bounds are outside of browser window, resize to fit screen if so
       const rightsideXPos = windowElement.offsetLeft + contentWidth
@@ -188,22 +207,41 @@ function createWindow(appName) {
     // Called when cursor moves during drag
     document.onmousemove = (moveEvent) => {
       moveEvent.preventDefault()
-      resizeBtn.style.cursor = 'grabbing'
 
-      // calculate the new cursor position:
+      // Calculate new cursor position
       pos1 = pos3 - moveEvent.clientX
       pos2 = pos4 - moveEvent.clientY
       pos3 = moveEvent.clientX
       pos4 = moveEvent.clientY
 
-      // Change window size
-      contentHeight = windowContent.scrollHeight - pos2
-      contentWidth = windowContent.scrollWidth - pos1
+      // Change window size (height)
+      if (resizeY) {
+        contentHeight = windowContent.scrollHeight - pos2
+        if (contentHeight < initialContentHeight) return
 
-      windowContent.style.height = `${contentHeight}px`
-      windowContent.style.width = `${contentWidth}px`
+        windowContent.style.height = `${contentHeight}px`
+      }
+
+      // Change window size (width)
+      if (resizeX) {
+        contentWidth = windowContent.scrollWidth - pos1
+        if (contentWidth < initialContentWidth) return
+
+        windowContent.style.width = `${contentWidth}px`
+      }
     }
   }
+
+  // Close window functionality
+  windowClose.addEventListener('click', () => {
+    OpenWindows.removeWindow(appName, windowElement)
+  })
+
+  // TODO: Minimize window functionality
+  windowMinimize.addEventListener('click', () => {
+    // TODO
+    console.log('minimize')
+  })
 
   // Add the element to the screen
   desktop.appendChild(windowElement)
@@ -224,6 +262,13 @@ function createWindow(appName) {
   contentHeight = windowContent.scrollHeight
   yPos = windowElement.style.top
   xPos = windowElement.style.left
+
+  const initialContentWidth = parseFloat(
+    window.getComputedStyle(windowContent).width.slice(0, -2)
+  )
+  const initialContentHeight = parseFloat(
+    window.getComputedStyle(windowContent).height.slice(0, -2)
+  )
 
   // Fullscreen header button functionality
   windowFullscreen.addEventListener('click', () => {
@@ -264,7 +309,7 @@ function createWindow(appName) {
     }
   })
 
-  //TODO: determine what background we want on the window content'
+  // TODO: determine what background we want on the window content'
   // windowContent.classList.add('white-bg')
   windowContent.classList.add('blur-bg-2')
 }

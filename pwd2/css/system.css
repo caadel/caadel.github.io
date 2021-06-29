@@ -121,9 +121,27 @@ i {
   position: absolute;
   bottom: 0;
   right: 0;
-  height: 1.25em;
-  width: 1.25em;
-  cursor: grab;
+  height: 1em;
+  width: 1em;
+  cursor: nwse-resize;
+}
+
+.window > .resizer-y {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 0.3em;
+  width: 100%;
+  cursor: ns-resize;
+}
+
+.window > .resizer-x {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0.3em;
+  height: 100%;
+  cursor: ew-resize;
 }
 
 .active-window {

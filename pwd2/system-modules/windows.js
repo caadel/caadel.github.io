@@ -19,7 +19,7 @@ function init(dataObject) {
  * Creates a new window and adds all window-related functionality to it.
  *
  * @param {String} appName - The name of the app to be launched.
- * @returns void
+ * @returns {HTMLElement} the created window.
  */
 function createWindow(appName) {
   const appTemplate = templates.content.querySelector(`#${appName}`)
@@ -312,6 +312,8 @@ function createWindow(appName) {
   // TODO: determine what background we want on the window content'
   // windowContent.classList.add('white-bg')
   windowContent.classList.add('blur-bg-2')
+
+  return windowElement
 }
 
 export default {

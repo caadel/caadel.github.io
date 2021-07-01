@@ -1,4 +1,5 @@
 import WindowHandler from './windows.js'
+import AppMenu from './app-menu.js'
 
 let taskbarShortcuts, template, fontSize, globalData, shortcutHeight
 let currentOffset = 1
@@ -43,7 +44,7 @@ function init(dataObject) {
     i++
   }
 
-  initAppList()
+  AppMenu.init(globalData)
 }
 
 function addAppToTaskbar(appName) {
@@ -200,45 +201,6 @@ function addAppToTaskbar(appName) {
 
 function removeAppFromTaskbar(appName) {
   // TODO
-}
-
-function initAppList() {
-  const appListBtn = document
-    .querySelector('.app-list')
-    .querySelector('.container')
-
-  const appListContainer = document.querySelector('#app-list')
-
-  const searchBox = appListContainer.querySelector('#app-list-search')
-
-  const appList = appListContainer.getElementsByTagName('ul')[0]
-
-  appListBtn.addEventListener('click', () => {
-    appListContainer.classList.toggle('hidden')
-  })
-
-  for (const appName in globalData.availableApps) {
-    const app = globalData.availableApps[appName]
-
-    const li = document.createElement('li')
-    li.innerHTML = `${app.icon} <span>${app.name}</span>`
-
-    appList.appendChild(li)
-
-    li.addEventListener('click', () => {
-      WindowHandler.createWindow(appName)
-    })
-  }
-
-  searchBox.addEventListener('input', () => {
-    for (const appNode of appList.childNodes) {
-      const text = appNode.childNodes[2].innerText
-
-      if (text.toUpperCase().indexOf(searchBox.value.toUpperCase()) > -1)
-        appNode.style.display = 'block'
-      else appNode.style.display = 'none'
-    }
-  })
 }
 
 /**

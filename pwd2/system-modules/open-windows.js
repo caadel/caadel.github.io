@@ -51,10 +51,9 @@ function setActiveWindow(name, window) {
     windowStack.push({ name: name, window: window })
 
     // Update window style
-    let prevActiveWindow = document.querySelector('.active-window')
-    if (prevActiveWindow !== null)
-      prevActiveWindow.classList.remove('active-window')
-    window.classList.add('active-window')
+    let prevActiveWindow = document.getElementsByClassName('active window')[0]
+    if (prevActiveWindow != null) prevActiveWindow.classList.remove('active')
+    window.classList.add('active')
 
     // TODO: track open window for keyboard controls
   }
@@ -125,9 +124,32 @@ function removeWindow(name, window) {
   if (windows.size === 0) windowStack = []
 }
 
+function getActiveWindow() {
+  return activeWindow
+}
+
+function clearOpenWindows() {
+  windowStack = []
+
+  let shortcuts = document
+    .querySelector('#taskbar')
+    .querySelector('.app-shortcuts')
+
+  for (const key of shortcuts.childNodes) {
+    key.classList.remove('active')
+  }
+
+  if (activeWindow) activeWindow.classList.remove('active')
+
+  activeWindow = null
+  activeAppName = null
+}
+
 export default {
   add,
   setActiveWindow,
   updateShortcutStyle,
   removeWindow,
+  getActiveWindow,
+  clearOpenWindows,
 }

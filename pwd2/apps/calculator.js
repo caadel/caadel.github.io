@@ -207,8 +207,44 @@ class App {
     }
   }
 
+  /**
+   * Receives a keyboard input and passes it to the app.
+   *
+   * @param {String} key - the input key.
+   */
   keyboardInput(key) {
-    // TODO
+    if (!isNaN(parseInt(key))) {
+      this.appendNumToString(key)
+      return
+    }
+
+    switch (key.toLowerCase()) {
+      case '%':
+        this.setOperation('÷')
+      case '-':
+      case '+':
+      case 'x':
+        this.setOperation(key)
+        break
+      case 'backspace':
+        this.delete()
+        break
+      case 'escape':
+        this.clearCurrent()
+        break
+      case 'c':
+        this.clearAll()
+        break
+      case '.':
+        this.appendNumToString(key)
+        break
+      case 'enter':
+      case '=':
+        this.calculate(true)
+        break
+      default:
+        break
+    }
   }
 }
 
@@ -263,19 +299,10 @@ function newInstance(windowID) {
   deleteBtn.addEventListener('click', () => {
     calc.delete()
   })
-}
 
-/**
- * Passes a keyboard input to an instance of the app.
- *
- * @param {String} windowID - the window id of the app to receive the input.
- * @param {Strig} key - the input key.
- */
-function keyboardInput(windowID, key) {
-  instances.get(windowID).keyboardInput(key)
+  return calc
 }
 
 export default {
   newInstance,
-  keyboardInput,
 }

@@ -35,6 +35,8 @@ function createWindow(appName) {
 
   const windowElement = windowTemplate.querySelector('.window')
 
+  windowElement.dataset.appName = appName
+
   // Add app content to window, TODO: get id from OpenWindows or app icons
   const appHTML = appTemplate.content.cloneNode(true)
   const windowContent = windowElement.querySelector('.content')

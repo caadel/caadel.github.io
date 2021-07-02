@@ -6,15 +6,27 @@ const outputMap = new Map()
 document.body.addEventListener('keydown', (e) => {
   const openWindow = OpenWindows.getActiveWindow()
 
-  // Close app menu
-  if (e.key === 'Escape') {
-    if (openWindow == null) {
-      AppMenu.hide()
-      return
+  // App menu controls
+  if (openWindow == null) {
+    if (!AppMenu.appMenuContainer.classList.contains('hidden')) {
+      switch (e.key) {
+        case 'Escape':
+          AppMenu.hide()
+          break
+        case 'ArrowUp':
+        case 'ArrowDown':
+          AppMenu.selectAnotherApp(e.key)
+          break
+        case 'Enter':
+          AppMenu.openSelectedApp()
+          break
+        default:
+          break
+      }
     }
-  }
 
-  if (openWindow == null) return
+    return
+  }
 
   // Send keypress to the correct app instance
   outputMap.get(openWindow.id).keyboardInput(e.key)

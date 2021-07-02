@@ -308,6 +308,6 @@ i {
   width: 100%;
 }
 
-#app-menu-search:focus {
-  background-color: rgba(46, 46, 46, 0.85);
+#app-menu ul li.selected {
+  background-color: rgba(255, 255, 255, 0.2);
 }

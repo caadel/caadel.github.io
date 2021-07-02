@@ -1,3 +1,5 @@
+import KeyboardModule from './keyboard.js'
+
 import Calculator from '../apps/calculator.js'
 // import Calendar from '../apps/calendar.js'
 // import DateTime from '../apps/date-time.js'
@@ -20,7 +22,8 @@ const appList = {
 function createApp(name, windowID) {
   switch (name) {
     case 'calculator':
-      Calculator.newInstance(windowID)
+      const calc = Calculator.newInstance(windowID)
+      KeyboardModule.attachOutput(windowID, calc)
       break
     default:
       console.log('No app found!')

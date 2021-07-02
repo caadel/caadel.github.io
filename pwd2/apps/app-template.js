@@ -1,8 +1,13 @@
 class App {
-  constructor(a) {
-    this.a = a
+  constructor(attr) {
+    this.attr = attr
   }
 
+  /**
+   * Receives a keyboard input and passes it to the app.
+   *
+   * @param {String} key - the input key.
+   */
   keyboardInput(key) {}
 }
 
@@ -19,19 +24,10 @@ function newInstance(windowID) {
   const instance = new App('data')
 
   instances.set(windowID, instance)
-}
 
-/**
- * Passes a keyboard input to an instance of the app.
- *
- * @param {String} windowID - the window id of the app to receive the input.
- * @param {Strig} key - the input key.
- */
-function keyboardInput(windowID, key) {
-  instances.get(windowID).keyboardInput(key)
+  return instance
 }
 
 export default {
   newInstance,
-  keyboardInput,
 }

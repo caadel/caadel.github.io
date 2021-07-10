@@ -29,7 +29,8 @@ document.body.addEventListener('keydown', (e) => {
   }
 
   // Send keypress to the correct app instance
-  outputMap.get(openWindow.id).keyboardInput(e.key)
+  const outWindow = outputMap.get(openWindow.id)
+  if (outWindow) outWindow.keyboardInput(e.key)
 })
 
 /**

@@ -1,7 +1,8 @@
 import GlobalData from './system-modules/global-data.js'
 import Windows from './system-modules/windows.js'
 import Settings from './system-modules/settings.js'
-import Apps from './system-modules/app-shortcuts.js'
+import Shortcuts from './system-modules/app-shortcuts.js'
+import RightClickModule from './system-modules/right-click.js'
 import KeyboardModule from './system-modules/keyboard.js'
 
 // Init global data
@@ -12,7 +13,10 @@ let DO = GlobalData.getDataObject()
 Windows.init(DO)
 
 // Init app icons in taskbar
-Apps.init(DO)
+Shortcuts.init(DO)
+
+// Init the custom right-click menu
+RightClickModule.init()
 
 // Testing adding windows manually
-// Windows.createWindow('calculator')
+Windows.createWindow('klondike')

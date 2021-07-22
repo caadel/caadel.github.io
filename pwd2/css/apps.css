@@ -56,3 +56,104 @@
 .calc > .wide {
   grid-column: span 2;
 }
+
+/* ============== KLONDIKE ============== */
+.klondike {
+  min-width: 700px;
+  min-height: 400px;
+}
+
+.klondike > .start-screen [data-start] {
+  outline: 2px solid red;
+}
+
+.klondike > .start-screen {
+  display: block;
+}
+
+.klondike > .game-screen {
+  display: none;
+}
+
+.klondike .piles {
+  margin-right: auto;
+  margin-left: auto;
+  background-color: cornsilk;
+}
+
+.klondike .not-piles {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+.klondike .card {
+  width: 100px;
+  height: 150px;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  cursor: pointer;
+  position: absolute;
+  padding: 0;
+  display: inline-block;
+}
+
+.klondike .card-face-front {
+  transform: rotateY(-180deg);
+}
+
+.klondike .in-shown-pile {
+  transform: rotateY(-180deg) translateX(-8em);
+}
+
+.klondike .card:hover {
+  outline: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.klondike .card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+}
+
+.klondike .card-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.klondike .deck {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.75);
+  height: 150px;
+  width: 100px;
+  cursor: pointer;
+}
+
+.klondike .deck p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.klondike .aces {
+  background-color: chartreuse;
+  height: 150px;
+  width: 640px;
+}
+
+.klondike .deck-area {
+  position: relative;
+  background-color: brown;
+  width: 400px;
+  height: 100px;
+  outline: 3px solid red;
+}

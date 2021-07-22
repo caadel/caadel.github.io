@@ -14,7 +14,7 @@
     <div class="content"></div>
     <div class="resizer-x"></div>
     <div class="resizer-y"></div>
-    <div class="resizer"></i></div>
+    <div class="resizer"></div>
   </div>
 </template>
 
@@ -65,3 +65,66 @@
 <template id="date-time"> Content, DATE & TIME </template>
 
 <template id="hangman"> Content, HANGMAN </template>
+
+<template id="klondike">
+  <div class="klondike">
+    <div class="start-screen">
+      <button data-start>New game</button>
+
+      <h2>Highscores</h2>
+      <ol class="highscores">
+        <li>-</li>
+        <li>-</li>
+        <li>-</li>
+        <li>-</li>
+        <li>-</li>
+      </ol>
+
+      <h2>Stats</h2>
+      <ol>
+        <li>Wins:</li>
+        <li>Losses:</li>
+        <li>Win rate:</li>
+        <li>Average time:</li>
+        <li>Slowest time:</li>
+      </ol>
+    </div>
+
+    <div class="game-screen">
+      <div class="piles">
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+      <div class="not-piles">
+        <ul class="aces">
+          <li>ace</li>
+          <li>ace</li>
+          <li>ace</li>
+          <li>ace</li>
+        </ul>
+
+        <span class="deck-area">
+          <div class="deck">
+            <p>Flip Deck</p>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="playing-card">
+  <div class="card-container">
+    <div class="card">
+      <img src="" alt="card front" class="card-face card-front" />
+      <img src="" alt="card back" class="card-face card-back" />
+    </div>
+  </div>
+</template>

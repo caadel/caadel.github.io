@@ -1,11 +1,12 @@
+<!-- General window template -->
 <template id="window-template">
   <div class="window" id="window_X">
     <div class="header blur-bg">
       <span class="icon"><i class="fas fa-infinity"></i></span>
       <span class="title"><h4>title</h4></span>
-      <span class="action minimize no-focus-on-click"
-        ><i class="fas fa-long-arrow-alt-down no-focus-on-click"></i
-      ></span>
+      <span class="action minimize no-focus-on-click">
+        <i class="fas fa-window-minimize no-focus-on-click"></i>
+      </span>
       <span class="action fullscreen"><i class="fas fa-expand"></i></span>
       <span class="action close no-focus-on-click"
         ><i class="fas fa-times no-focus-on-click"></i
@@ -18,6 +19,7 @@
   </div>
 </template>
 
+<!-- Taskbar shortcut template -->
 <template id="app-shortcut-template">
   <div class="container not-being-corrected">
     <div class="windows-container">
@@ -29,6 +31,7 @@
   </div>
 </template>
 
+<!-- Calculator app template -->
 <template id="calculator">
   <div class="calc">
     <div class="results">
@@ -56,16 +59,61 @@
     <button data-number>0</button>
     <button data-equals class="wide">=</button>
 
+    <!-- TODO: calc history -->
     <div class="history"></div>
   </div>
 </template>
 
+<!-- Calendar app template -->
 <template id="calendar"> Content, CALENDAR </template>
 
+<!-- Date & Time app template -->
 <template id="date-time"> Content, DATE & TIME </template>
 
+<!-- Hangman app template -->
 <template id="hangman"> Content, HANGMAN </template>
 
+<!-- Settings app template -->
+<template id="settings">
+  <div class="settings">
+    <div class="category-menu blur-bg">
+      <ul>
+        <li data-cat="date-time"><i class="fas fa-clock"></i>Date & Time</li>
+        <li data-cat="desktop"><i class="fas fa-desktop"></i>Desktop</li>
+        <li data-cat="general"><i class="fas fa-cog"></i>Other/General</li>
+        <li data-cat="personalization">
+          <i class="fas fa-palette"></i>Personalization
+        </li>
+        <li data-cat="windows"><i class="far fa-window-restore"></i>Windows</li>
+      </ul>
+    </div>
+
+    <div class="category-settings"></div>
+
+    <div class="category-contents">
+      <div data-cat="date-time">date and time</div>
+      <div data-cat="desktop">desktop</div>
+      <div data-cat="general">
+        general or other
+        <button id="reset-settings">Reset settings</button>
+        <button id="log-settings">Log settings</button>
+      </div>
+      <div data-cat="personalization">personalization</div>
+      <div data-cat="windows">
+        <h2>Border roundness</h2>
+        <input
+          type="range"
+          min="0"
+          max="12"
+          class="slider"
+          id="border-radius-slider"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Klondike Solitaire app template -->
 <template id="klondike">
   <div class="klondike">
     <div class="start-screen">
@@ -120,6 +168,7 @@
   </div>
 </template>
 
+<!-- Playing card template -->
 <template id="playing-card">
   <div class="card-container">
     <div class="card">

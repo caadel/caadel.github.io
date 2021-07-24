@@ -1,6 +1,8 @@
 /* ============== GENERAL STYLES ============== */
 :root {
-  --window-border-blue: rgb(17, 0, 80);
+  --window-border: none;
+  --window-border-radius: 0;
+  --window-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -36,6 +38,11 @@ i {
   backdrop-filter: blur(10px);
 }
 
+.blur-bg-light {
+  background-color: rgba(70, 70, 70, 0.5);
+  backdrop-filter: blur(2px);
+}
+
 /* ============== DESKTOP ============== */
 #desktop {
   position: relative;
@@ -59,11 +66,14 @@ i {
   width: fit-content;
   height: fit-content;
   min-width: 250px;
-  box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--window-shadow); /* removable in settings*/
+  -webkit-box-shadow: var(--window-shadow);
+  -moz-box-shadow: var(--window-shadow);
   color: rgb(156, 156, 156);
   overflow: hidden;
+  border-radius: var(
+    --window-border-radius
+  ); /* controllable with slider in settings app*/
 }
 
 .hide {

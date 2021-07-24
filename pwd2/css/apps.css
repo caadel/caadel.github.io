@@ -1,3 +1,7 @@
+:root {
+  --test-var: #4d1414;
+}
+
 /* ============== CALCULATOR ============== */
 .calc {
   font-size: 1.2em;
@@ -156,4 +160,42 @@
   width: 400px;
   height: 100px;
   outline: 3px solid red;
+}
+
+/* ============== SETTINGS ============== */
+.settings {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  gap: 0;
+  grid-template-rows: minmax(10em, auto);
+  grid-template-columns: max-content minmax(20em, auto);
+}
+
+.settings .category-menu {
+  text-align: left;
+  font-weight: bold;
+}
+
+.settings .category-menu i {
+  position: initial;
+  transform: none;
+  padding-right: 0.5em;
+}
+
+.settings .category-menu li {
+  cursor: pointer;
+  padding: 0.75em;
+}
+
+.settings .category-menu li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.settings .category-settings {
+  background-color: var(--test-var);
+}
+
+.settings .category-contents {
+  display: none;
 }

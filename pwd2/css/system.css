@@ -321,3 +321,15 @@ i {
 #app-menu ul li.selected {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+/* ============== RIGHTCLICK MENU ============== */
+#right-click-menu {
+  position: absolute;
+  color: white;
+
+  display: none;
+}
+
+#right-click-menu div {
+  cursor: pointer;
+}

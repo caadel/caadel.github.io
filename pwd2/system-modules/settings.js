@@ -1,12 +1,16 @@
 import StorageModule from './storage.js'
 
 const availableSettings = {
-  WINDOWBORDERRADIUS: '--window-border-radius',
+  WINDOW_BORDER_RADIUS: '--window-border-radius',
+  WINDOW_BORDER_WIDTH: '--window-border-width',
+  WINDOW_BORDER_COLOR: '--window-border-color',
 }
 Object.freeze(availableSettings)
 
 const defaultValues = {
-  WINDOWBORDERRADIUS: '0',
+  WINDOW_BORDER_RADIUS: '0',
+  WINDOW_BORDER_WIDTH: '0',
+  WINDOW_BORDER_COLOR: '#000',
 }
 
 function init() {
@@ -37,14 +41,19 @@ function getSetting(setting) {
   return fetchedSetting
 }
 
-function setSetting(setting, ...args) {
-  switch (setting) {
-    case availableSettings.WINDOWBORDERRADIUS:
-      document.documentElement.style.setProperty(
-        availableSettings.WINDOWBORDERRADIUS,
-        `${args[0]}px`
-      )
-      updateStorage(availableSettings.WINDOWBORDERRADIUS, `${args[0]}px`)
+function setSetting(settingName, ...args) {
+  switch (settingName) {
+    case availableSettings.WINDOW_BORDER_RADIUS:
+      document.documentElement.style.setProperty(settingName, `${args[0]}px`)
+      updateStorage(settingName, `${args[0]}px`)
+      break
+    case availableSettings.WINDOW_BORDER_WIDTH:
+      document.documentElement.style.setProperty(settingName, `${args[0]}px`)
+      updateStorage(settingName, `${args[0]}px`)
+      break
+    case availableSettings.WINDOW_BORDER_COLOR:
+      document.documentElement.style.setProperty(settingName, args[0])
+      updateStorage(settingName, args[0])
       break
 
     default:

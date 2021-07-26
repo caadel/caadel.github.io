@@ -76,7 +76,7 @@
 <!-- Settings app template -->
 <template id="settings">
   <div class="settings">
-    <div class="category-menu blur-bg">
+    <nav class="category-menu blur-bg">
       <ul>
         <li data-cat="date-time"><i class="fas fa-clock"></i>Date & Time</li>
         <li data-cat="desktop"><i class="fas fa-desktop"></i>Desktop</li>
@@ -86,7 +86,7 @@
         </li>
         <li data-cat="windows"><i class="far fa-window-restore"></i>Windows</li>
       </ul>
-    </div>
+    </nav>
 
     <div class="category-settings"></div>
 
@@ -100,14 +100,31 @@
       </div>
       <div data-cat="personalization">personalization</div>
       <div data-cat="windows">
-        <h2>Border roundness</h2>
-        <input
-          type="range"
-          min="0"
-          max="12"
-          class="slider"
-          id="border-radius-slider"
-        />
+        <h3>Borders</h3>
+        <h5>Border width</h5>
+        <span class="relative">
+          <input
+            type="range"
+            min="0"
+            max="5"
+            class="slider"
+            name="border-width-slider"
+          />
+          <label for="border-width-slider" class="slider"></label>
+        </span>
+        <h5>Window/border roundness</h5>
+        <span class="relative">
+          <input
+            type="range"
+            min="0"
+            max="15"
+            class="slider"
+            name="border-radius-slider"
+          />
+          <label for="border-radius-slider" class="slider"></label>
+        </span>
+        <h5>Border color</h5>
+        <input type="color" name="border-color-picker" />
       </div>
     </div>
   </div>

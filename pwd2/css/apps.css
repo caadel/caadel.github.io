@@ -1,5 +1,5 @@
 :root {
-  --test-var: #4d1414;
+  --test-var: #252525c4;
 }
 
 /* ============== CALCULATOR ============== */
@@ -186,16 +186,50 @@
 .settings .category-menu li {
   cursor: pointer;
   padding: 0.75em;
+  transition: background-color 0.2s;
+}
+
+.settings .category-menu li.active {
+  background-color: rgba(173, 173, 173, 0.2);
 }
 
 .settings .category-menu li:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.settings .category-settings {
-  background-color: var(--test-var);
-}
-
 .settings .category-contents {
   display: none;
+}
+
+.settings .category-settings {
+  background-color: var(--test-var);
+  text-align: left;
+  font-size: 1.15em;
+  padding: 1em;
+  padding-top: 0;
+}
+
+.settings .category-settings h3 {
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  padding-bottom: 0.15em;
+  border-bottom: 2px solid white;
+}
+
+.settings .category-settings h5 {
+  margin-top: 0.65em;
+  font-weight: normal;
+  margin-bottom: 1px;
+}
+
+.settings .category-settings label {
+  font-size: 0.75em;
+  padding: 0 0.3em;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-48%);
+}
+.settings .category-settings label.slider {
+  transform: translateY(-56%);
 }

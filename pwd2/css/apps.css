@@ -222,14 +222,13 @@
   margin-bottom: 1px;
 }
 
-.settings .category-settings label {
+.settings .category-settings label.slider {
   font-size: 0.75em;
   padding: 0 0.3em;
-
   position: absolute;
   top: 50%;
-  transform: translateY(-48%);
-}
-.settings .category-settings label.slider {
   transform: translateY(-56%);
+}
+
+.setting .inline {
 }

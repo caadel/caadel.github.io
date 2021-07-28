@@ -25,7 +25,7 @@ const appList = {
   },
   settings: {
     name: 'Settings',
-    icon: "<i class='fas fa-cogs'></i>",
+    icon: "<i class='fas fa-cog'></i>",
   },
 }
 

@@ -80,10 +80,7 @@
       <ul>
         <li data-cat="date-time"><i class="fas fa-clock"></i>Date & Time</li>
         <li data-cat="desktop"><i class="fas fa-desktop"></i>Desktop</li>
-        <li data-cat="general"><i class="fas fa-cog"></i>Other/General</li>
-        <li data-cat="personalization">
-          <i class="fas fa-palette"></i>Personalization
-        </li>
+        <li data-cat="general"><i class="fas fa-cogs"></i>System</li>
         <li data-cat="windows"><i class="far fa-window-restore"></i>Windows</li>
       </ul>
     </nav>
@@ -94,37 +91,54 @@
       <div data-cat="date-time">date and time</div>
       <div data-cat="desktop">desktop</div>
       <div data-cat="general">
-        general or other
         <button id="reset-settings">Reset settings</button>
         <button id="log-settings">Log settings</button>
+        <h3>System</h3>
+
+        <h5>Dark mode</h5>
+        <label class="switch">
+          <input type="checkbox" name="system-darkmode-check" />
+          <span class="check-slider round"></span>
+        </label>
+        <span id="system-darkmode-text">on</span>
       </div>
-      <div data-cat="personalization">personalization</div>
       <div data-cat="windows">
-        <h3>Borders</h3>
+        <h3>Windows</h3>
+
         <h5>Border width</h5>
         <span class="relative">
           <input
             type="range"
             min="0"
             max="5"
-            class="slider"
+            class="range-slider"
             name="border-width-slider"
           />
           <label for="border-width-slider" class="slider"></label>
         </span>
-        <h5>Window/border roundness</h5>
-        <span class="relative">
+
+        <div class="relative">
+          <h5>Corner roundness</h5>
+
           <input
             type="range"
             min="0"
             max="15"
-            class="slider"
+            class="range-slider"
             name="border-radius-slider"
           />
           <label for="border-radius-slider" class="slider"></label>
-        </span>
-        <h5>Border color</h5>
+        </div>
+
+        <span>Border color</span>
         <input type="color" name="border-color-picker" />
+
+        <h5>Background transparency</h5>
+        <label class="switch">
+          <input type="checkbox" name="window-transparency-check" />
+          <span class="check-slider round"></span>
+        </label>
+        <span id="window-transparency-text">on</span>
       </div>
     </div>
   </div>

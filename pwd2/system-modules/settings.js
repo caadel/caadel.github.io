@@ -3,6 +3,8 @@ import StorageModule from './storage.js'
 const availableSettings = {
   SYSTEM_ACCENT_COLOR: '--accent-color',
   SYSTEM_BACKGROUND_TRANSPARENCY: '--background-transparency',
+  SYSTEM_BACKGROUND_COLOR: '--background-color',
+  SYSTEM_FONT_COLOR: '--font-color',
   SYSTEM_DARKMODE_1: '--darkmode-color-1',
   SYSTEM_DARKMODE_2: '--darkmode-color-2',
   WINDOW_BORDER_RADIUS: '--window-border-radius',
@@ -12,8 +14,10 @@ const availableSettings = {
 Object.freeze(availableSettings)
 
 const defaultValues = {
-  '--accent-color': 'turquoise',
+  '--accent-color': '#40e0d0',
   '--background-transparency': '0.75',
+  '--background-color': '#000000',
+  '--font-color': '#f3f3f3',
   '--darkmode-color-1': 'rgb(5,5,5)',
   '--darkmode-color-2': 'b',
   '--window-border-radius': '5px',
@@ -57,8 +61,12 @@ function setSetting(settingName, ...args) {
       document.documentElement.style.setProperty(settingName, `${args[0]}px`)
       updateStorage(settingName, `${args[0]}px`)
       break
-    case availableSettings.WINDOW_BORDER_COLOR:
+
+    case availableSettings.SYSTEM_ACCENT_COLOR:
     case availableSettings.SYSTEM_BACKGROUND_TRANSPARENCY:
+    case availableSettings.SYSTEM_BACKGROUND_COLOR:
+    case availableSettings.SYSTEM_FONT_COLOR:
+    case availableSettings.WINDOW_BORDER_COLOR:
       document.documentElement.style.setProperty(settingName, args[0])
       updateStorage(settingName, args[0])
       break

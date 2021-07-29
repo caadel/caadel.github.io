@@ -1,7 +1,3 @@
-:root {
-  --test-var: #252525c4;
-}
-
 /* ============== CALCULATOR ============== */
 .calc {
   font-size: 1.2em;
@@ -202,7 +198,7 @@
 }
 
 .settings .category-settings {
-  background-color: var(--test-var);
+  background-color: rgba(114, 114, 114, 0.5);
   text-align: left;
   font-size: 1.15em;
   padding: 1em;
@@ -238,17 +234,22 @@
 }
 
 .settings button[name='reset-settings'] {
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(196, 196, 196);
   border: none;
   border-radius: 1px;
-  padding: 0.3em 0.8em;
-  padding-bottom: 0.4em;
-  font-size: 0.8em;
+  padding: 0.3em 0.5em;
+  font-size: 0.9em;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 0.2em;
+  border: 1px solid black;
 }
 
 .settings button[name='reset-settings']:hover {
-  background-color: var(--accent-color);
+  background-color: white;
+}
+
+.settings input[type='color'] {
+  margin-top: 0.2em;
 }

@@ -116,24 +116,24 @@ function setupAllCategories(
 }
 
 function setupSystemSettings(content, reset) {
-  // Background transparency settings
+  // Background transparency setting
   const transparencyCheckbox = content.querySelector(
     `[name="background-transparency-check"]`
   )
   const transparencyLabel = content.querySelector(
-    '#background-transparency-text'
+    `[name="background-transparency-text"]`
   )
   let transparencySetting = SettingsModule.getSetting(
     settings.SYSTEM_BACKGROUND_TRANSPARENCY
   )
 
-  transparencySetting === '1'
-    ? (transparencyCheckbox.checked = false)
-    : (transparencyCheckbox.checked = true)
-
-  transparencyCheckbox.checked
-    ? (transparencyLabel.innerHTML = 'on')
-    : (transparencyLabel.innerHTML = 'off')
+  if (transparencySetting === '1') {
+    transparencyCheckbox.checked = false
+    transparencyLabel.innerHTML = 'off'
+  } else {
+    transparencyCheckbox.checked = true
+    transparencyLabel.innerHTML = 'on'
+  }
 
   if (!reset) {
     transparencyCheckbox.addEventListener('input', () => {
@@ -149,10 +149,29 @@ function setupSystemSettings(content, reset) {
       }
     })
   }
+
+  // Accent color setting
+  colorPicker(
+    content,
+    'accent-color-picker',
+    settings.SYSTEM_ACCENT_COLOR,
+    reset
+  )
+
+  // Background color setting
+  colorPicker(
+    content,
+    'background-color-picker',
+    settings.SYSTEM_BACKGROUND_COLOR,
+    reset
+  )
+
+  // Font color setting
+  colorPicker(content, 'font-color-picker', settings.SYSTEM_FONT_COLOR, reset)
 }
 
 function setupWindowsSettings(content, reset) {
-  // Border width settings
+  // Border width setting
   const borderWidthSlider = content.querySelector(
     `[name="border-width-slider"]`
   )
@@ -201,27 +220,27 @@ function setupWindowsSettings(content, reset) {
     })
   }
 
-  // Border color settings
-  const borderColorPicker = content.querySelector(
-    `[name="border-color-picker"]`
+  // Border color setting
+  colorPicker(
+    content,
+    'border-color-picker',
+    settings.WINDOW_BORDER_COLOR,
+    reset
   )
-  const borderColorSetting = SettingsModule.getSetting(
-    settings.WINDOW_BORDER_COLOR
-  )
-  borderColorPicker.value = borderColorSetting
+}
+
+function colorPicker(content, name, setting, reset) {
+  const colorPicker = content.querySelector(`[name="${name}"]`)
+
+  const colorSetting = SettingsModule.getSetting(setting)
+  colorPicker.value = colorSetting
 
   if (!reset) {
-    borderColorPicker.addEventListener('input', () => {
-      SettingsModule.setSetting(
-        settings.WINDOW_BORDER_COLOR,
-        borderColorPicker.value
-      )
+    colorPicker.addEventListener('input', () => {
+      SettingsModule.setSetting(setting, colorPicker.value)
     })
-    borderColorPicker.addEventListener('change', () => {
-      SettingsModule.setSetting(
-        settings.WINDOW_BORDER_COLOR,
-        borderColorPicker.value
-      )
+    colorPicker.addEventListener('change', () => {
+      SettingsModule.setSetting(setting, colorPicker.value)
     })
   }
 }

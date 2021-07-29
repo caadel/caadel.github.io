@@ -83,7 +83,7 @@ i {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--darkmode-color-1);
+  background-color: var(--background-color);
   opacity: var(--background-transparency);
   content: '';
   width: 100%;
@@ -156,7 +156,7 @@ i {
 }
 
 .window.active {
-  color: white;
+  color: var(--font-color);
 }
 
 /* ============== TASKBAR ============== */
@@ -176,7 +176,7 @@ i {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--darkmode-color-1);
+  background-color: var(--background-color);
   opacity: var(--background-transparency);
   content: '';
   width: 100%;
@@ -193,7 +193,7 @@ i {
 
 .app-menu {
   width: 3em;
-  color: white;
+  color: var(--font-color);
   transition: background-color 0.2s;
 }
 
@@ -205,7 +205,7 @@ i {
   position: relative;
   overflow-x: scroll;
   height: 3em;
-  color: white;
+  color: var(--font-color);
 }
 
 .app-shortcuts .container,
@@ -252,12 +252,10 @@ i {
 .app-shortcuts .container:hover,
 .app-menu .container:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.85);
 }
 
 .app-shortcuts .windows-container {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 2px;
   width: 6em;
   visibility: hidden;
@@ -265,6 +263,7 @@ i {
   text-align: center;
   left: 50%;
   padding: 0.2em 0.1em;
+  background-color: var(--background-color);
 }
 
 .app-shortcuts .container:hover .windows-container {
@@ -273,7 +272,7 @@ i {
 
 /* ============== APP LIST MENU ============== */
 #app-menu {
-  color: white;
+  color: var(--font-color);
   height: 19.5em;
   width: fit-content;
   position: absolute;
@@ -368,7 +367,7 @@ i {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(182, 182, 182);
+  background-color: rgba(255, 255, 255, 0.5);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -384,7 +383,7 @@ i {
   width: 0.65em;
   left: 0.18em;
   bottom: 0.18em;
-  background-color: rgb(44, 44, 44);
+  background-color: var(--background-color);
   -webkit-transition: transform 0.3s;
   transition: transform 0.3s;
 }
@@ -429,16 +428,15 @@ input:checked + .check-slider:before {
   width: 95%;
   height: 0.4em;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.75);
   outline: none;
-  opacity: 0.7;
   -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
+  transition: background-color 0.2s;
   cursor: pointer;
 }
 
 .range-slider:hover {
-  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .range-slider::-webkit-slider-thumb {
@@ -447,19 +445,15 @@ input:checked + .check-slider:before {
   width: 0.9em;
   height: 0.9em;
   border-radius: 50%;
-  background-color: rgb(44, 44, 44);
-  border: 3px solid white;
+  background-color: var(--font-color);
+  border: 3px solid rgba(255, 255, 255, 0.75);
   transition: background-color 0.2s;
 }
-
-/* .range-slider::-webkit-slider-thumb:hover {
-  background-color: var(--accent-color);
-} */
 
 .range-slider::-moz-range-thumb {
   width: 0.9em;
   height: 0.9em;
   border-radius: 50%;
-  background: var(--accent-color);
+  background: var(--font-color);
   transition: background-color 0.2s;
 }

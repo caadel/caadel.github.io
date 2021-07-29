@@ -1,14 +1,17 @@
 import SettingsModule from '../system-modules/settings.js'
 const settings = SettingsModule.availableSettings
-const settingsDefault = SettingsModule.defaultValues
 
 class App {
-  constructor(outputArea, categoryContents, menuItems) {
-    this.currentCategory = 'windows'
+  constructor(outputArea, categoryContents, menuItems, initialCategory) {
+    this.currentCategory = initialCategory
     this.categoryDisplayArea = outputArea
     this.categoryContents = categoryContents
     this.previousCategoryContents = null
     this.menuItems = menuItems
+
+    this.setDisplayAreaContent(
+      menuItems.querySelector(`[data-cat="${initialCategory}"]`)
+    )
   }
 
   changeActiveSettingsCategory(button, newCategoryName) {
@@ -41,9 +44,9 @@ class App {
     // Prepare for next category swap
     this.previousCategoryContents = currentContent
   }
-}
 
-// document.createElement().appendChild
+  resetDisplayAreaContent() {}
+}
 
 const instances = new Map()
 
@@ -58,7 +61,7 @@ function newInstance(windowID) {
   const content = window.querySelector('.category-contents')
   const menuList = window.querySelector('ul')
 
-  const instance = new App(settingsArea, content, menuList)
+  const instance = new App(settingsArea, content, menuList, 'system')
 
   instances.set(windowID, instance)
 
@@ -70,25 +73,85 @@ function newInstance(windowID) {
   }
 
   // Setup functionality for the different settings sliders/buttons/etc
-  setupWindowsSettings(content)
+  setupAllCategories(menuList, content, settingsArea, false)
 
-  content.querySelector('#reset-settings').addEventListener('click', () => {
+  // Reset settings button (special case since it changes values of all categories)
+  let resetBtn = content.querySelector(`[name="reset-settings"]`)
+  if (resetBtn === null)
+    resetBtn = settingsArea.querySelector(`[name="reset-settings"]`)
+
+  resetBtn.addEventListener('click', () => {
     SettingsModule.clearSettings()
-    // TODO: reset the displayed value in sliders, buttons, etc
-    // borderRadiusSlider.value = settingsDefault[settings.WINDOW_BORDER_RADIUS]
-  })
 
-  content.querySelector('#log-settings').addEventListener('click', () => {
-    SettingsModule.printSettings()
+    setupAllCategories(menuList, content, settingsArea, true)
   })
-
-  // Set initial active category
-  instance.setDisplayAreaContent(menuList.querySelector(`[data-cat="windows"]`))
 
   return instance
 }
 
-function setupWindowsSettings(content) {
+function setupAllCategories(
+  categories,
+  contentStorage,
+  settingsDisplayArea,
+  resetOnly
+) {
+  for (let i = 1; i < categories.childNodes.length; i += 2) {
+    let content = contentStorage
+    const category = categories.childNodes[i]
+    const active = category.classList.contains('active')
+
+    if (active) content = settingsDisplayArea
+
+    switch (category.dataset.cat) {
+      case 'windows':
+        setupWindowsSettings(content, resetOnly)
+        break
+      case 'system':
+        setupSystemSettings(content, resetOnly)
+        break
+      default:
+        break
+    }
+  }
+}
+
+function setupSystemSettings(content, reset) {
+  // Background transparency settings
+  const transparencyCheckbox = content.querySelector(
+    `[name="background-transparency-check"]`
+  )
+  const transparencyLabel = content.querySelector(
+    '#background-transparency-text'
+  )
+  let transparencySetting = SettingsModule.getSetting(
+    settings.SYSTEM_BACKGROUND_TRANSPARENCY
+  )
+
+  transparencySetting === '1'
+    ? (transparencyCheckbox.checked = false)
+    : (transparencyCheckbox.checked = true)
+
+  transparencyCheckbox.checked
+    ? (transparencyLabel.innerHTML = 'on')
+    : (transparencyLabel.innerHTML = 'off')
+
+  if (!reset) {
+    transparencyCheckbox.addEventListener('input', () => {
+      if (transparencyCheckbox.checked) {
+        transparencyLabel.innerHTML = 'on'
+        SettingsModule.setSetting(
+          settings.SYSTEM_BACKGROUND_TRANSPARENCY,
+          SettingsModule.defaultValues[settings.SYSTEM_BACKGROUND_TRANSPARENCY]
+        )
+      } else {
+        transparencyLabel.innerHTML = 'off'
+        SettingsModule.setSetting(settings.SYSTEM_BACKGROUND_TRANSPARENCY, '1')
+      }
+    })
+  }
+}
+
+function setupWindowsSettings(content, reset) {
   // Border width settings
   const borderWidthSlider = content.querySelector(
     `[name="border-width-slider"]`
@@ -99,20 +162,20 @@ function setupWindowsSettings(content) {
   let borderWidthSetting = SettingsModule.getSetting(
     settings.WINDOW_BORDER_WIDTH
   )
-  let borderWidthDisplayValue
-  if (borderWidthSetting === null)
-    borderWidthDisplayValue = settingsDefault.WINDOW_BORDER_WIDTH
-  else borderWidthDisplayValue = borderWidthSetting.slice(0, -2)
+
+  const borderWidthDisplayValue = borderWidthSetting.slice(0, -2)
   borderWidthSlider.value = borderWidthDisplayValue
   borderWidthSlider_label.innerHTML = borderWidthDisplayValue
 
-  borderWidthSlider.addEventListener('input', () => {
-    SettingsModule.setSetting(
-      settings.WINDOW_BORDER_WIDTH,
-      borderWidthSlider.value
-    )
-    borderWidthSlider_label.innerHTML = borderWidthSlider.value
-  })
+  if (!reset) {
+    borderWidthSlider.addEventListener('input', () => {
+      SettingsModule.setSetting(
+        settings.WINDOW_BORDER_WIDTH,
+        borderWidthSlider.value
+      )
+      borderWidthSlider_label.innerHTML = borderWidthSlider.value
+    })
+  }
 
   // Border radius setting
   const borderRadiusSlider = content.querySelector(
@@ -124,44 +187,43 @@ function setupWindowsSettings(content) {
   let borderRadiusSetting = SettingsModule.getSetting(
     settings.WINDOW_BORDER_RADIUS
   )
-  let borderRadiusDisplayValue
-  if (borderRadiusSetting === null)
-    borderRadiusDisplayValue = settingsDefault.WINDOW_BORDER_RADIUS
-  else borderRadiusDisplayValue = borderRadiusSetting.slice(0, -2)
+  const borderRadiusDisplayValue = borderRadiusSetting.slice(0, -2)
   borderRadiusSlider.value = borderRadiusDisplayValue
   borderRadiusSlider_label.innerHTML = borderRadiusDisplayValue
 
-  borderRadiusSlider.addEventListener('input', () => {
-    SettingsModule.setSetting(
-      settings.WINDOW_BORDER_RADIUS,
-      borderRadiusSlider.value
-    )
-    borderRadiusSlider_label.innerHTML = borderRadiusSlider.value
-  })
+  if (!reset) {
+    borderRadiusSlider.addEventListener('input', () => {
+      SettingsModule.setSetting(
+        settings.WINDOW_BORDER_RADIUS,
+        borderRadiusSlider.value
+      )
+      borderRadiusSlider_label.innerHTML = borderRadiusSlider.value
+    })
+  }
 
   // Border color settings
   const borderColorPicker = content.querySelector(
     `[name="border-color-picker"]`
   )
-  let borderColorSetting = SettingsModule.getSetting(
+  const borderColorSetting = SettingsModule.getSetting(
     settings.WINDOW_BORDER_COLOR
   )
-  if (borderColorSetting === null)
-    borderColorPicker.value = settingsDefault.WINDOW_BORDER_COLOR
-  else borderColorPicker.value = borderColorSetting
+  borderColorPicker.value = borderColorSetting
 
-  borderColorPicker.addEventListener('input', () => {
-    SettingsModule.setSetting(
-      settings.WINDOW_BORDER_COLOR,
-      borderColorPicker.value
-    )
-  })
-  borderColorPicker.addEventListener('change', () => {
-    SettingsModule.setSetting(
-      settings.WINDOW_BORDER_COLOR,
-      borderColorPicker.value
-    )
-  })
+  if (!reset) {
+    borderColorPicker.addEventListener('input', () => {
+      SettingsModule.setSetting(
+        settings.WINDOW_BORDER_COLOR,
+        borderColorPicker.value
+      )
+    })
+    borderColorPicker.addEventListener('change', () => {
+      SettingsModule.setSetting(
+        settings.WINDOW_BORDER_COLOR,
+        borderColorPicker.value
+      )
+    })
+  }
 }
 
 export default {

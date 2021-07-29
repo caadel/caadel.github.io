@@ -80,7 +80,7 @@
       <ul>
         <li data-cat="date-time"><i class="fas fa-clock"></i>Date & Time</li>
         <li data-cat="desktop"><i class="fas fa-desktop"></i>Desktop</li>
-        <li data-cat="general"><i class="fas fa-cogs"></i>System</li>
+        <li data-cat="system"><i class="fas fa-cogs"></i>System</li>
         <li data-cat="windows"><i class="far fa-window-restore"></i>Windows</li>
       </ul>
     </nav>
@@ -90,18 +90,30 @@
     <div class="category-contents">
       <div data-cat="date-time">date and time</div>
       <div data-cat="desktop">desktop</div>
-      <div data-cat="general">
-        <button id="reset-settings">Reset settings</button>
-        <button id="log-settings">Log settings</button>
+      <div data-cat="system">
         <h3>System</h3>
 
         <h5>Dark mode</h5>
-        <label class="switch">
-          <input type="checkbox" name="system-darkmode-check" />
-          <span class="check-slider round"></span>
-        </label>
-        <span id="system-darkmode-text">on</span>
+        <div class="relative switch-container">
+          <label class="switch">
+            <input type="checkbox" name="system-darkmode-check" />
+            <span class="check-slider round"></span>
+          </label>
+          <span id="system-darkmode-text" class="check-status">on</span>
+        </div>
+
+        <h5>Background transparency</h5>
+        <div class="relative switch-container">
+          <label class="switch">
+            <input type="checkbox" name="background-transparency-check" />
+            <span class="check-slider round"></span>
+          </label>
+          <span id="background-transparency-text" class="check-status"></span>
+        </div>
+        <h5>Reset all settings</h5>
+        <button name="reset-settings">Click to reset</button>
       </div>
+
       <div data-cat="windows">
         <h3>Windows</h3>
 
@@ -117,9 +129,8 @@
           <label for="border-width-slider" class="slider"></label>
         </span>
 
+        <h5>Corner roundness</h5>
         <div class="relative">
-          <h5>Corner roundness</h5>
-
           <input
             type="range"
             min="0"
@@ -130,15 +141,10 @@
           <label for="border-radius-slider" class="slider"></label>
         </div>
 
-        <span>Border color</span>
-        <input type="color" name="border-color-picker" />
-
-        <h5>Background transparency</h5>
-        <label class="switch">
-          <input type="checkbox" name="window-transparency-check" />
-          <span class="check-slider round"></span>
-        </label>
-        <span id="window-transparency-text">on</span>
+        <div class="margins">
+          <span class="h5">Border color</span>
+          <input type="color" name="border-color-picker" />
+        </div>
       </div>
     </div>
   </div>

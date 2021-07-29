@@ -217,9 +217,8 @@
 }
 
 .settings .category-settings h5 {
-  margin-top: 0.65em;
+  margin-top: 1.5em;
   font-weight: normal;
-  margin-bottom: 1px;
 }
 
 .settings .category-settings label.slider {
@@ -227,8 +226,29 @@
   padding: 0 0.3em;
   position: absolute;
   top: 50%;
-  transform: translateY(-56%);
+  transform: translateY(-35%);
 }
 
-.setting .inline {
+.settings .margins {
+  margin-top: 1em;
+}
+
+.settings .h5 {
+  font-size: 0.8em;
+}
+
+.settings button[name='reset-settings'] {
+  background-color: rgb(235, 235, 235);
+  border: none;
+  border-radius: 1px;
+  padding: 0.3em 0.8em;
+  padding-bottom: 0.4em;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 0.2em;
+}
+
+.settings button[name='reset-settings']:hover {
+  background-color: var(--accent-color);
 }

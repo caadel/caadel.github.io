@@ -1,6 +1,10 @@
 import StorageModule from './storage.js'
 
 const availableSettings = {
+  SYSTEM_ACCENT_COLOR: '--accent-color',
+  SYSTEM_BACKGROUND_TRANSPARENCY: '--background-transparency',
+  SYSTEM_DARKMODE_1: '--darkmode-color-1',
+  SYSTEM_DARKMODE_2: '--darkmode-color-2',
   WINDOW_BORDER_RADIUS: '--window-border-radius',
   WINDOW_BORDER_WIDTH: '--window-border-width',
   WINDOW_BORDER_COLOR: '--window-border-color',
@@ -8,14 +12,16 @@ const availableSettings = {
 Object.freeze(availableSettings)
 
 const defaultValues = {
-  WINDOW_BORDER_RADIUS: '0',
-  WINDOW_BORDER_WIDTH: '0',
-  WINDOW_BORDER_COLOR: '#000',
+  '--accent-color': 'turquoise',
+  '--background-transparency': '0.75',
+  '--darkmode-color-1': 'rgb(5,5,5)',
+  '--darkmode-color-2': 'b',
+  '--window-border-radius': '5px',
+  '--window-border-width': '0px',
+  '--window-border-color': '#000',
 }
 
 function init() {
-  console.log('init settings')
-
   // How to set a value
   // document.documentElement.style.setProperty('--test-var', '#FFFFFF')
 
@@ -26,7 +32,8 @@ function init() {
   for (const setting of Object.keys(availableSettings)) {
     let fetchedValue = StorageModule.getItem(availableSettings[setting])
 
-    if (fetchedValue === null) fetchedValue = defaultValues[setting]
+    if (fetchedValue === null)
+      fetchedValue = defaultValues[availableSettings[setting]]
 
     document.documentElement.style.setProperty(
       availableSettings[setting],
@@ -38,24 +45,23 @@ function init() {
 function getSetting(setting) {
   let fetchedSetting = StorageModule.getItem(setting)
 
+  if (fetchedSetting === null) fetchedSetting = defaultValues[setting]
+
   return fetchedSetting
 }
 
 function setSetting(settingName, ...args) {
   switch (settingName) {
     case availableSettings.WINDOW_BORDER_RADIUS:
-      document.documentElement.style.setProperty(settingName, `${args[0]}px`)
-      updateStorage(settingName, `${args[0]}px`)
-      break
     case availableSettings.WINDOW_BORDER_WIDTH:
       document.documentElement.style.setProperty(settingName, `${args[0]}px`)
       updateStorage(settingName, `${args[0]}px`)
       break
     case availableSettings.WINDOW_BORDER_COLOR:
+    case availableSettings.SYSTEM_BACKGROUND_TRANSPARENCY:
       document.documentElement.style.setProperty(settingName, args[0])
       updateStorage(settingName, args[0])
       break
-
     default:
       break
   }

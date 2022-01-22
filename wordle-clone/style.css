@@ -1,0 +1,89 @@
+:root {
+  --hsl7: hsl(0, 0%, 7%);
+  --hsl11: hsl(0, 0%, 11%);
+  --hsl18: hsl(0, 0%, 18%);
+  --hsl20: hsl(0, 0%, 20%);
+  --hsl28: hsl(0, 0%, 28%);
+  --hsl80: hsl(0, 0%, 75%);
+  --hsl85: hsl(0, 0%, 85%);
+  --border-radius: 0.2em;
+  --font-size: 16px;
+  --primary-light: rgb(255, 140, 140);
+  --primary: rgb(245, 96, 96);
+  --green-1: rgb(63, 153, 63);
+  --green-2: rgb(34, 122, 34);
+  --yellow-1: rgb(194, 168, 20);
+  --yellow-2: rgb(155, 132, 4);
+  --grey-1: hsl(0, 0%, 40%);
+  --grey-2: hsl(0, 0%, 30%);
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  justify-content: center;
+  margin: 0;
+  background-color: var(--hsl11);
+  color: var(--hsl85);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+#grid {
+  width: fit-content;
+  margin-top: 2rem;
+  display: grid;
+  gap: 0.25rem;
+  grid-template-rows: repeat(6, 3rem);
+  grid-template-columns: repeat(5, 3rem);
+}
+
+#grid div {
+  font-size: 1.5em;
+  border-width: 3px;
+  font-weight: bold;
+  border-style: solid;
+  border-color: var(--grey-2);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.grey {
+  border-color: var(--grey-2) !important;
+  background-color: var(--grey-1) !important;
+}
+
+.green {
+  border-color: var(--green-2) !important;
+  background-color: var(--green-1) !important;
+}
+
+.yellow {
+  border-color: var(--yellow-2) !important;
+  background-color: var(--yellow-1) !important;
+}
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#keyboard {
+  outline: 1px solid green;
+  width: fit-content;
+}
+
+#error-out {
+  width: fit-content;
+  color: var(--hsl80);
+  padding: 1rem;
+  font-weight: bold;
+}

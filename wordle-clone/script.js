@@ -2,6 +2,10 @@ import dictionary from "./dictionary.js";
 
 const grid = document.querySelector("#grid");
 const errOut = document.querySelector("#error-out");
+const settingsBtn = document.querySelector("#settings-btn");
+const settingsArea = document.querySelector("#settings-area");
+const restartBtn = document.querySelector("#restart-btn");
+const datasetCheck = document.querySelector("#checkbox-1");
 
 let wordSize = 5;
 let currPos, isAtEndOfRow, hasWon, word, guess, guessesMade;
@@ -80,10 +84,10 @@ function guessWord() {
   guessesMade++;
 
   if (guess === word) {
-    console.log("W");
+    errOut.innerText = "YOU WON!";
     hasWon = true;
   } else if (guessesMade === 6) {
-    console.log("L");
+    console.log("YOU LOST!");
   }
 
   isAtEndOfRow = false;
@@ -99,9 +103,23 @@ function updateGuessedRow() {
     // TODO: how should double letters be handled?
     // currently guess "tests" makrs both "s" as yellow for the word "snowy"
 
-    console.log("word[i]: " + wordLetter + ", guess[i]: " + guessLetter);
+    // console.log("word[i]: " + wordLetter + ", guess[i]: " + guessLetter);
     if (wordLetter === guessLetter) cell.classList = "green";
     else if (word.includes(guessLetter)) cell.classList = "yellow";
     else cell.classList = "grey";
   }
 }
+
+// toggle settings dropdown
+settingsBtn.addEventListener("click", () =>
+  settingsArea.classList.toggle("height-auto")
+);
+
+// restart the game
+restartBtn.addEventListener("click", () => newGame());
+
+// change dataset to select random words from
+datasetCheck.addEventListener("change", () => {
+  datasetCheck.checked ? (useSmallDataset = false) : (useSmallDataset = true);
+  newGame();
+});

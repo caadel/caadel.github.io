@@ -4,14 +4,45 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Wordle Clone</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module" defer></script>
   </head>
   <body>
-    <div id="grid" class="centered"></div>
+    <div class="content centered">
+      <nav>
+        <span id="settings-btn">⚙ Settings⠀</span>
+        <span id="restart-btn">⭯ Restart</span>
+      </nav>
+      <div id="settings-area">
+        <div>
+          <input
+            id="checkbox-1"
+            class="checkbox-custom"
+            name="checkbox-1"
+            type="checkbox"
+          />
+          <label for="checkbox-1" class="checkbox-custom-label">
+            Use harder dataset
+          </label>
+        </div>
+        <div>
+          <input
+            id="checkbox-2"
+            class="checkbox-custom"
+            name="checkbox-2"
+            type="checkbox"
+          />
+          <label for="checkbox-2" class="checkbox-custom-label">
+            Darkmode
+          </label>
+        </div>
+      </div>
 
-    <div id="error-out" class="centered"></div>
+      <div id="grid" class="centered"></div>
+
+      <div id="error-out" class="centered"></div>
+    </div>
 
     <!-- <div id="keyboard" class="centered">keyboard area</div> -->
   </body>

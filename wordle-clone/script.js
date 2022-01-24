@@ -6,10 +6,23 @@ const settingsBtn = document.querySelector("#settings-btn");
 const settingsArea = document.querySelector("#settings-area");
 const restartBtn = document.querySelector("#restart-btn");
 const datasetCheck = document.querySelector("#checkbox-1");
+const darkmodeCheck = document.querySelector("#checkbox-2");
 
 let wordSize = 5;
 let currPos, isAtEndOfRow, hasWon, word, guess, guessesMade;
 let useSmallDataset = true;
+
+// init
+if (localStorage.getItem("useDarkmode") === "false") {
+  darkmodeCheck.checked = false;
+  document.documentElement.setAttribute("no-transition", "");
+  document.documentElement.setAttribute("lightmode", "");
+}
+if (localStorage.getItem("useSmallDataset") === "false") {
+  datasetCheck.checked = true;
+  useSmallDataset = false;
+}
+newGame();
 
 function newGame() {
   currPos = 0;
@@ -29,7 +42,6 @@ function newGame() {
     grid.appendChild(document.createElement("div"));
   }
 }
-newGame();
 
 document.addEventListener("keydown", (e) => {
   if (hasWon) return;
@@ -52,7 +64,9 @@ document.addEventListener("keydown", (e) => {
 });
 
 function addLetter(letter) {
-  grid.childNodes[currPos].innerText = letter.toUpperCase();
+  const cell = grid.childNodes[currPos];
+  cell.innerText = letter.toUpperCase();
+  cell.classList = "active-cell";
   currPos++;
   guess += letter;
   if (currPos % wordSize === 0 && currPos !== 0) isAtEndOfRow = true;
@@ -63,7 +77,9 @@ function removeLetter() {
     return;
 
   currPos--;
-  grid.childNodes[currPos].innerText = "";
+  const cell = grid.childNodes[currPos];
+  cell.innerText = "";
+  cell.classList = "";
   guess = guess.slice(0, -1);
   isAtEndOfRow = false;
 }
@@ -104,22 +120,36 @@ function updateGuessedRow() {
     // currently guess "tests" makrs both "s" as yellow for the word "snowy"
 
     // console.log("word[i]: " + wordLetter + ", guess[i]: " + guessLetter);
-    if (wordLetter === guessLetter) cell.classList = "green";
-    else if (word.includes(guessLetter)) cell.classList = "yellow";
-    else cell.classList = "grey";
+    if (wordLetter === guessLetter) cell.classList = "correct-guess";
+    else if (word.includes(guessLetter)) cell.classList = "incorrect-pos-guess";
+    else cell.classList = "incorrect-guess";
   }
 }
 
 // toggle settings dropdown
-settingsBtn.addEventListener("click", () =>
-  settingsArea.classList.toggle("height-auto")
-);
+settingsBtn.addEventListener("click", () => {
+  document.documentElement.removeAttribute("no-transition");
+  settingsArea.classList.toggle("height-auto");
+});
 
 // restart the game
 restartBtn.addEventListener("click", () => newGame());
 
+// toggle darkmode
+darkmodeCheck.addEventListener("change", () => {
+  document.documentElement.toggleAttribute("lightmode");
+  darkmodeCheck.checked
+    ? localStorage.setItem("useDarkmode", true)
+    : localStorage.setItem("useDarkmode", false);
+});
+
 // change dataset to select random words from
 datasetCheck.addEventListener("change", () => {
-  datasetCheck.checked ? (useSmallDataset = false) : (useSmallDataset = true);
+  let bool = true;
+  if (datasetCheck.checked) bool = false;
+
+  useSmallDataset = bool;
+  localStorage.setItem("useSmallDataset", bool);
+
   newGame();
 });

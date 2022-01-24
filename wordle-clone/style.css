@@ -1,21 +1,36 @@
 :root {
-  --hsl7: hsl(0, 0%, 7%);
-  --hsl11: hsl(0, 0%, 11%);
+  --body-bg: hsl(0, 0%, 7%);
+  --settings-bg: hsl(0, 0%, 11%);
   --hsl18: hsl(0, 0%, 18%);
   --hsl20: hsl(0, 0%, 20%);
   --hsl28: hsl(0, 0%, 28%);
-  --hsl80: hsl(0, 0%, 75%);
-  --hsl85: hsl(0, 0%, 85%);
-  --border-radius: 0.2em;
-  --font-size: 16px;
-  --primary-light: rgb(255, 140, 140);
-  --primary: rgb(245, 96, 96);
-  --green-1: rgb(63, 153, 63);
-  --green-2: rgb(34, 122, 34);
-  --yellow-1: rgb(194, 168, 20);
-  --yellow-2: rgb(155, 132, 4);
+  --font-color-1: hsl(0, 0%, 85%);
+  --font-color-2: hsl(0, 0%, 75%);
+  --correct-light: rgb(63, 153, 63);
+  --correct-dark: rgb(34, 122, 34);
+  --badpos-light: rgb(177, 153, 19);
+  --badpos-dark: rgb(148, 127, 5);
   --grey-1: hsl(0, 0%, 40%);
   --grey-2: hsl(0, 0%, 30%);
+  --checkbox-bg: rgba(255, 255, 255, 0.055);
+  --checkbox-border: hsl(0, 0%, 20%);
+  --inactive-cell-border: hsl(0, 0%, 30%);
+  --color-transition: 0.35s;
+}
+
+:root[lightmode] {
+  --body-bg: hsl(0, 0%, 90%);
+  --settings-bg: hsl(0, 0%, 83%);
+  --font-color-1: hsl(0, 0%, 11%);
+  --font-color-2: hsl(0, 0%, 35%);
+  --font-color-3: hsl(0, 0%, 20%);
+  --checkbox-bg: hsl(0, 0%, 95%);
+  --checkbox-border: hsl(0, 0%, 45%);
+  --inactive-cell-border: hsl(0, 0%, 65%);
+}
+
+:root[no-transition] {
+  --color-transition: 0s;
 }
 
 html {
@@ -25,8 +40,9 @@ html {
 body {
   justify-content: center;
   margin: 0;
-  background-color: var(--hsl7);
-  color: var(--hsl85);
+  background-color: var(--body-bg);
+  transition: all var(--color-transition);
+  color: var(--font-color-1);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -52,7 +68,7 @@ h1 {
   border-width: 3px;
   font-weight: bold;
   border-style: solid;
-  border-color: var(--grey-2);
+  border-color: var(--inactive-cell-border);
   background: transparent;
   display: flex;
   align-items: center;
@@ -60,19 +76,23 @@ h1 {
   user-select: none;
 }
 
-.grey {
+.active-cell {
+  border-color: var(--grey-1) !important;
+}
+
+.incorrect-guess {
   border-color: var(--grey-2) !important;
   background-color: var(--grey-1) !important;
 }
 
-.green {
-  border-color: var(--green-2) !important;
-  background-color: var(--green-1) !important;
+.correct-guess {
+  border-color: var(--correct-dark) !important;
+  background-color: var(--correct-light) !important;
 }
 
-.yellow {
-  border-color: var(--yellow-2) !important;
-  background-color: var(--yellow-1) !important;
+.incorrect-pos-guess {
+  border-color: var(--badpos-dark) !important;
+  background-color: var(--badpos-light) !important;
 }
 
 #keyboard {
@@ -82,7 +102,7 @@ h1 {
 
 #error-out {
   width: fit-content;
-  color: var(--hsl80);
+  color: var(--font-color-2);
   padding: 1rem;
   font-weight: bold;
 }
@@ -103,12 +123,13 @@ nav span {
 }
 
 nav span:hover {
-  background-color: var(--hsl11);
+  background-color: var(--settings-bg);
 }
 
 #settings-area {
-  transition: height 0.15s;
-  background: var(--hsl11);
+  transition: all var(--color-transition), color 0.1s;
+  background: var(--settings-bg);
+  color: var(--font-color-3);
   height: 0;
   overflow: hidden;
   margin-top: 0.25rem;
@@ -141,8 +162,8 @@ nav span:hover {
 /* box */
 .checkbox-custom + .checkbox-custom-label:before {
   content: "";
-  background: rgba(255, 255, 255, 0.055);
-  border: 1px solid var(--hsl20);
+  background-color: var(--checkbox-bg);
+  border: 1px solid var(--checkbox-border);
   display: inline-block;
   vertical-align: middle;
   width: 10px;
@@ -151,6 +172,7 @@ nav span:hover {
   margin-right: 10px;
   text-align: center;
   margin-top: -3px;
+  transition: all var(--color-transition);
 }
 
 /* checkmark */
@@ -159,15 +181,20 @@ nav span:hover {
   padding: 2px;
   text-align: center;
   position: absolute;
-  width: 1px;
-  height: 5px;
-  border: solid var(--hsl80);
-  border-width: 0 3px 3px 0;
+  width: 2px;
+  height: 12px;
+  border: solid var(--font-color-1);
+  border-width: 0 4px 4px 0;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
-  top: -1px;
+  top: -6px;
   left: 5px;
+  transition: all var(--color-transition);
+}
+
+#checkbox-2 + .checkbox-custom-label:after {
+  top: -5px;
 }
 
 .centered {

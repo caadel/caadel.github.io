@@ -7,6 +7,7 @@ const settingsArea = document.querySelector("#settings-area");
 const restartBtn = document.querySelector("#restart-btn");
 const datasetCheck = document.querySelector("#checkbox-1");
 const darkmodeCheck = document.querySelector("#checkbox-2");
+const keyboard = document.querySelector("#keyboard");
 
 let wordSize = 5;
 let currPos, isAtEndOfRow, hasWon, word, guess, guessesMade;
@@ -43,16 +44,29 @@ function newGame() {
   }
 }
 
+// Normal keyboard inoput
 document.addEventListener("keydown", (e) => {
+  handleAction(e.key, false, e.repeat);
+});
+
+// Virtual keyboard input
+keyboard.addEventListener("click", (e) => {
+  if (e.target.tagName !== "SPAN") return;
+  handleAction(e.target.innerText, true);
+});
+
+function handleAction(key, usedVirtualKeyboard, repeat) {
   if (hasWon) return;
 
   errOut.innerText = "";
 
-  const key = e.key.toLowerCase();
+  key = key.toLowerCase();
 
-  if (key === "backspace") removeLetter();
+  if (!usedVirtualKeyboard) {
+    if (key === "backspace") removeLetter();
 
-  if (e.repeat) return;
+    if (repeat) return;
+  } else if (key === "⌫") removeLetter();
 
   if (key === "enter") guessWord();
 
@@ -61,7 +75,7 @@ document.addEventListener("keydown", (e) => {
 
   // Letter input, ignored if row is already full
   if (!isAtEndOfRow) addLetter(key);
-});
+}
 
 function addLetter(letter) {
   const cell = grid.childNodes[currPos];

@@ -10,10 +10,10 @@ const darkmodeCheck = document.querySelector("#checkbox-2");
 const keyboard = document.querySelector("#keyboard");
 
 let wordSize = 5;
-let currPos, isAtEndOfRow, hasWon, word, guess, guessesMade;
+let currPos, isAtEndOfRow, hasWon, word, guess, numOfGuessesMade;
 let useSmallDataset = true;
 
-// init
+// INIT START //
 if (localStorage.getItem("useDarkmode") === "false") {
   darkmodeCheck.checked = false;
   document.documentElement.setAttribute("no-transition", "");
@@ -23,19 +23,34 @@ if (localStorage.getItem("useSmallDataset") === "false") {
   datasetCheck.checked = true;
   useSmallDataset = false;
 }
+
+const STATUS = Object.freeze({
+  CORRECT: "correct-guess",
+  BAD_POS: "incorrect-pos-guess",
+  INCORRECT: "incorrect-guess",
+});
+const letterMap = new Map();
+let letters = keyboard.querySelectorAll("span");
+for (const key of letters) {
+  const it = key.innerText.toLowerCase();
+  if (it === "backspace" || it === "⌫") continue;
+  letterMap.set(it, key);
+}
+
 newGame();
+// INIT END //
 
 function newGame() {
   currPos = 0;
   isAtEndOfRow = false;
   hasWon = false;
   guess = "";
-  guessesMade = 0;
+  numOfGuessesMade = 0;
   errOut.innerText = "";
 
   word = dictionary.getRandomWord(useSmallDataset);
 
-  console.log(word);
+  for (const key of letterMap.values()) key.classList = "";
 
   grid.innerHTML = "";
 
@@ -44,9 +59,13 @@ function newGame() {
   }
 }
 
-// Normal keyboard inoput
+// Normal keyboard input
 document.addEventListener("keydown", (e) => {
+  settingsArea.classList.remove("height-auto");
+
   handleAction(e.key, false, e.repeat);
+
+  // TODO: flash or "bounce scale" the last pressed key?
 });
 
 // Virtual keyboard input
@@ -62,11 +81,11 @@ function handleAction(key, usedVirtualKeyboard, repeat) {
 
   key = key.toLowerCase();
 
+  // Delete action
   if (!usedVirtualKeyboard) {
-    if (key === "backspace") removeLetter();
-
+    if (key === "backspace") removeLetterFromBoard();
     if (repeat) return;
-  } else if (key === "⌫") removeLetter();
+  } else if (key === "⌫") removeLetterFromBoard();
 
   if (key === "enter") guessWord();
 
@@ -74,10 +93,10 @@ function handleAction(key, usedVirtualKeyboard, repeat) {
   if (!key.match(/[a-z]/) || key.length > 1) return;
 
   // Letter input, ignored if row is already full
-  if (!isAtEndOfRow) addLetter(key);
+  if (!isAtEndOfRow) addLetterToBoard(key);
 }
 
-function addLetter(letter) {
+function addLetterToBoard(letter) {
   const cell = grid.childNodes[currPos];
   cell.innerText = letter.toUpperCase();
   cell.classList = "active-cell";
@@ -86,8 +105,11 @@ function addLetter(letter) {
   if (currPos % wordSize === 0 && currPos !== 0) isAtEndOfRow = true;
 }
 
-function removeLetter() {
-  if (currPos === 0 || (!isAtEndOfRow && currPos - wordSize * guessesMade < 1))
+function removeLetterFromBoard() {
+  if (
+    currPos === 0 ||
+    (!isAtEndOfRow && currPos - wordSize * numOfGuessesMade < 1)
+  )
     return;
 
   currPos--;
@@ -111,13 +133,13 @@ function guessWord() {
 
   updateGuessedRow();
 
-  guessesMade++;
+  numOfGuessesMade++;
 
   if (guess === word) {
     errOut.innerText = "YOU WON!";
     hasWon = true;
-  } else if (guessesMade === 6) {
-    console.log("YOU LOST!");
+  } else if (numOfGuessesMade === 6) {
+    errOut.innerText = "YOU LOST!";
   }
 
   isAtEndOfRow = false;
@@ -127,16 +149,40 @@ function guessWord() {
 function updateGuessedRow() {
   for (let i = currPos - wordSize; i < currPos; i++) {
     const cell = grid.childNodes[i];
-    const wordLetter = word[i - wordSize * guessesMade];
-    const guessLetter = guess[i - wordSize * guessesMade];
+    const wordLetter = word[i - wordSize * numOfGuessesMade];
+    const guessLetter = guess[i - wordSize * numOfGuessesMade];
 
     // TODO: how should double letters be handled?
     // currently guess "tests" makrs both "s" as yellow for the word "snowy"
 
     // console.log("word[i]: " + wordLetter + ", guess[i]: " + guessLetter);
-    if (wordLetter === guessLetter) cell.classList = "correct-guess";
-    else if (word.includes(guessLetter)) cell.classList = "incorrect-pos-guess";
-    else cell.classList = "incorrect-guess";
+    let newStatus;
+    if (wordLetter === guessLetter) {
+      newStatus = STATUS.CORRECT;
+    } else if (word.includes(guessLetter)) {
+      newStatus = STATUS.BAD_POS;
+    } else {
+      newStatus = STATUS.INCORRECT;
+    }
+
+    cell.classList = newStatus;
+    updateKeyboardKey(guessLetter, newStatus);
+  }
+}
+
+function updateKeyboardKey(letter, newStatus) {
+  const key = letterMap.get(letter);
+  const letterStatus = key.classList.toString();
+
+  // Only ever "upgrade" key colors in the keyboard
+  switch (letterStatus) {
+    case "":
+    case STATUS.INCORRECT:
+      key.classList = newStatus;
+      break;
+    case STATUS.BAD_POS:
+      if (newStatus === STATUS.CORRECT) key.classList = STATUS.CORRECT;
+      break;
   }
 }
 

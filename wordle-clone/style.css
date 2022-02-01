@@ -80,6 +80,16 @@ h1 {
 
 .active-cell {
   border-color: var(--grey-1) !important;
+  animation: scale-bounce 0.05s 2 alternate;
+}
+
+@keyframes scale-bounce {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
 }
 
 .incorrect-guess {
@@ -100,6 +110,7 @@ h1 {
 .correct-guess,
 .incorrect-pos-guess {
   color: hsl(0, 0%, 85%);
+  transition: all 0.5s;
 }
 
 #keyboard {

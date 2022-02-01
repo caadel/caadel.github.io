@@ -1,6 +1,6 @@
 import dictionary from "./dictionary.js";
 
-const grid = document.querySelector("#grid");
+const guessGrid = document.querySelector("#grid");
 const errOut = document.querySelector("#error-out");
 const settingsBtn = document.querySelector("#settings-btn");
 const settingsArea = document.querySelector("#settings-area");
@@ -24,7 +24,7 @@ if (localStorage.getItem("useSmallDataset") === "false") {
   useSmallDataset = false;
 }
 
-const STATUS = Object.freeze({
+const STATE = Object.freeze({
   CORRECT: "correct-guess",
   BAD_POS: "incorrect-pos-guess",
   INCORRECT: "incorrect-guess",
@@ -52,10 +52,10 @@ function newGame() {
 
   for (const key of letterMap.values()) key.classList = "";
 
-  grid.innerHTML = "";
+  guessGrid.innerHTML = "";
 
   for (let i = 0; i < wordSize * 6; i++) {
-    grid.appendChild(document.createElement("div"));
+    guessGrid.appendChild(document.createElement("div"));
   }
 }
 
@@ -97,7 +97,7 @@ function handleAction(key, usedVirtualKeyboard, repeat) {
 }
 
 function addLetterToBoard(letter) {
-  const cell = grid.childNodes[currPos];
+  const cell = guessGrid.childNodes[currPos];
   cell.innerText = letter.toUpperCase();
   cell.classList = "active-cell";
   currPos++;
@@ -113,7 +113,7 @@ function removeLetterFromBoard() {
     return;
 
   currPos--;
-  const cell = grid.childNodes[currPos];
+  const cell = guessGrid.childNodes[currPos];
   cell.innerText = "";
   cell.classList = "";
   guess = guess.slice(0, -1);
@@ -146,30 +146,84 @@ function guessWord() {
   guess = "";
 }
 
+/**
+ * Goes over the guess row and updates the UI with correct colors.
+ * Overly long and complicated because of duplicate letter handling.
+ */
 function updateGuessedRow() {
+  let duplicatesInGuess = new Set();
+  let uniqueLettersInWord = new Map();
+  let uniqueLettersInGuess = new Set();
+  let guessLetterStates = [];
+
+  // 1: check if the chosen word contains any duplicates
+  for (let i = 0; i < 5; i++) {
+    const letter = word[i];
+    // record duplicate letters in the word
+    if (uniqueLettersInWord.has(letter)) {
+      uniqueLettersInWord.set(letter, uniqueLettersInWord.get(letter) + 1);
+    } else uniqueLettersInWord.set(letter, 1);
+  }
+
+  // 2: record the preliminary state of each letter in the guess
   for (let i = currPos - wordSize; i < currPos; i++) {
-    const cell = grid.childNodes[i];
     const wordLetter = word[i - wordSize * numOfGuessesMade];
     const guessLetter = guess[i - wordSize * numOfGuessesMade];
 
-    // TODO: how should double letters be handled?
-    // currently guess "tests" makrs both "s" as yellow for the word "snowy"
+    // determine letter guess correctness state
+    if (wordLetter === guessLetter) guessLetterStates.push(STATE.CORRECT);
+    else if (word.includes(guessLetter)) guessLetterStates.push(STATE.BAD_POS);
+    else guessLetterStates.push(STATE.INCORRECT);
 
-    // console.log("word[i]: " + wordLetter + ", guess[i]: " + guessLetter);
-    let newStatus;
-    if (wordLetter === guessLetter) {
-      newStatus = STATUS.CORRECT;
-    } else if (word.includes(guessLetter)) {
-      newStatus = STATUS.BAD_POS;
-    } else {
-      newStatus = STATUS.INCORRECT;
+    // check for duplicate letters in the guess
+    if (uniqueLettersInGuess.has(guessLetter)) {
+      duplicatesInGuess.add(guessLetter);
+    } else uniqueLettersInGuess.add(guessLetter);
+  }
+
+  // 3: fix any incorrect states caused by duplicate letters in the guess
+  for (const letter of duplicatesInGuess.values()) {
+    let duplicateIndices = [];
+    for (let i = 0; i < guess.length; i++) {
+      if (guess[i] === letter) duplicateIndices.push(i);
     }
 
-    cell.classList = newStatus;
-    updateKeyboardKey(guessLetter, newStatus);
+    let numOfFixesNeeded =
+      duplicateIndices.length -
+      (uniqueLettersInWord.get(letter) || duplicateIndices.length);
+
+    // Only need to correct if there fewer dupes in the word than in the guess
+    if (numOfFixesNeeded > 0) {
+      // Apply fixes from back to front
+      for (let i = duplicateIndices.length - 1; i >= 0; i--) {
+        const index = duplicateIndices[i];
+
+        if (guessLetterStates[index] === STATE.CORRECT) continue;
+
+        guessLetterStates[index] = STATE.INCORRECT;
+        numOfFixesNeeded--;
+
+        if (numOfFixesNeeded === 0) break;
+      }
+    }
+  }
+
+  // 4: update the UI with the final states
+  for (let i = 0; i < guessLetterStates.length; i++) {
+    const newState = guessLetterStates[i];
+    guessGrid.childNodes[i + wordSize * numOfGuessesMade].classList = newState;
+    updateKeyboardKey(guess[i], newState);
   }
 }
 
+/**
+ * Updates the color of a key on the virtual keyboard.
+ * Only allows the "correctness state" of a key to be improved.
+ * (e.g. from "wrong position" to "correct")
+ *
+ * @param {String} letter - The key to update.
+ * @param {String} newStatus - The new status to give the key.
+ */
 function updateKeyboardKey(letter, newStatus) {
   const key = letterMap.get(letter);
   const letterStatus = key.classList.toString();
@@ -177,11 +231,11 @@ function updateKeyboardKey(letter, newStatus) {
   // Only ever "upgrade" key colors in the keyboard
   switch (letterStatus) {
     case "":
-    case STATUS.INCORRECT:
+    case STATE.INCORRECT:
       key.classList = newStatus;
       break;
-    case STATUS.BAD_POS:
-      if (newStatus === STATUS.CORRECT) key.classList = STATUS.CORRECT;
+    case STATE.BAD_POS:
+      if (newStatus === STATE.CORRECT) key.classList = STATE.CORRECT;
       break;
   }
 }

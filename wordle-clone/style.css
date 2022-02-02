@@ -5,7 +5,7 @@
   --hsl20: hsl(0, 0%, 20%);
   --hsl28: hsl(0, 0%, 28%);
   --font-color-1: hsl(0, 0%, 85%);
-  --font-color-2: hsl(0, 0%, 75%);
+  --font-color-2: hsl(0, 0%, 60%);
   --correct-light: rgb(63, 153, 63);
   --correct-dark: rgb(34, 122, 34);
   --badpos-light: rgb(177, 153, 19);
@@ -47,6 +47,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   user-select: none;
   font-size: 16px;
+  overflow-y: scroll;
 }
 
 .content {
@@ -119,6 +120,10 @@ h1 {
   gap: 0.25rem;
   grid-template-rows: repeat(3, 3rem);
   line-height: 3rem;
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 #keyboard span {
@@ -166,12 +171,13 @@ h1 {
 }
 
 #error-out {
-  width: fit-content;
+  width: 100%;
   color: var(--font-color-2);
-  padding: 1rem;
+  padding: 1rem 0;
   font-weight: bold;
-  height: 2rem;
-  line-height: 2rem;
+  margin-top: 0.5rem;
+  min-height: 1.2rem;
+  text-align: center;
 }
 
 nav {
@@ -208,7 +214,7 @@ nav span:hover {
   padding: 0.75rem 0.5rem;
 }
 
-.height-auto {
+#settings-area.height-auto {
   height: 5.25rem !important;
 }
 
@@ -262,7 +268,52 @@ nav span:hover {
   top: -5px;
 }
 
+#distribution {
+  width: fit-content;
+  text-align: center;
+  margin-top: -1rem;
+  margin-bottom: 12rem;
+  padding: 0 0.5rem 1.6rem;
+  border-radius: 3px;
+  transition: opacity 0.2s;
+}
+#distribution h3 {
+  line-height: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+#distribution #bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 200px;
+  counter-reset: barCounter;
+}
+
+#distribution #bars span {
+  background-color: var(--correct-light);
+  width: 2.3rem;
+  vertical-align: top;
+  padding: 0.25rem 0;
+  position: relative;
+  font-weight: bold;
+  color: hsl(0, 0%, 85%);
+}
+#distribution #bars span::after {
+  counter-increment: barCounter;
+  content: counter(barCounter);
+  position: absolute;
+  bottom: -1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--font-color-2);
+}
+
 .centered {
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
+}
+
+.hidden-opacity {
+  opacity: 0;
 }

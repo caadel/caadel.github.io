@@ -8,6 +8,8 @@ const restartBtn = document.querySelector("#restart-btn");
 const datasetCheck = document.querySelector("#checkbox-1");
 const darkmodeCheck = document.querySelector("#checkbox-2");
 const keyboard = document.querySelector("#keyboard");
+const distributionArea = document.querySelector("#distribution");
+const bars = distributionArea.querySelectorAll("span");
 
 let wordSize = 5;
 let currPos, isAtEndOfRow, hasWon, word, guess, numOfGuessesMade;
@@ -23,6 +25,8 @@ if (localStorage.getItem("useSmallDataset") === "false") {
   datasetCheck.checked = true;
   useSmallDataset = false;
 }
+let scores = JSON.parse(localStorage.getItem("scores"));
+if (scores === null) scores = new Array(6).fill(0);
 
 const STATE = Object.freeze({
   CORRECT: "correct-guess",
@@ -47,6 +51,7 @@ function newGame() {
   guess = "";
   numOfGuessesMade = 0;
   errOut.innerText = "";
+  distributionArea.classList.add("hidden-opacity");
 
   word = dictionary.getRandomWord(useSmallDataset);
 
@@ -136,10 +141,11 @@ function guessWord() {
   numOfGuessesMade++;
 
   if (guess === word) {
-    errOut.innerText = "YOU WON!";
+    errOut.innerText = `You won in ${numOfGuessesMade} guesses!`;
     hasWon = true;
+    updateAndShowScores(numOfGuessesMade);
   } else if (numOfGuessesMade === 6) {
-    errOut.innerText = "YOU LOST!";
+    errOut.innerText = `You Lost! The word was ${word}`;
   }
 
   isAtEndOfRow = false;
@@ -238,6 +244,27 @@ function updateKeyboardKey(letter, newStatus) {
       if (newStatus === STATE.CORRECT) key.classList = STATE.CORRECT;
       break;
   }
+}
+
+/**
+ * Updates the scores history and shows the score distribution graph.
+ *
+ * @param {Number} guessesMadeToWin - The number of guesses made to win the last game.
+ */
+function updateAndShowScores(guessesMadeToWin) {
+  scores[guessesMadeToWin - 1]++;
+  localStorage.setItem("scores", JSON.stringify(scores));
+
+  // let m = scores.reduce((a, b) => a + b); // % of total
+  const m = Math.max(...scores); // % of max
+  for (let i = 0; i < 6; i++) {
+    const bar = bars[i];
+    const s = scores[i];
+    bar.innerText = s;
+    bar.style.height = `${(s / m) * 174 + 18}px`;
+  }
+
+  distributionArea.classList.remove("hidden-opacity");
 }
 
 // toggle settings dropdown

@@ -1,0 +1,125 @@
+/* General styling */
+:root {
+  --dark-bg: hsl(0, 0%, 7%);
+  --board-bg: hsl(0, 0%, 85%);
+  --board-bg-disabled: hsl(0, 0%, 50%);
+  --cross-light-color: hsl(0, 0%, 38%);
+  --cross-hit-color: hsl(0, 100%, 40%);
+  --cross-miss-color: hsl(251, 61%, 24%);
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--dark-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Game board containers */
+.game-area,
+.setup-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.setup-area {
+  position: absolute;
+}
+
+.setup-area.hidden {
+  display: none;
+}
+
+/* Game boards */
+.board,
+.setup-board {
+  display: grid;
+  grid-template-columns: repeat(10, 2rem);
+  grid-template-rows: repeat(10, 2rem);
+  background-color: var(--board-bg);
+  border: 1px solid black;
+  position: relative;
+}
+
+.board.disabled,
+.setup-board.disabled {
+  pointer-events: none;
+  background-color: var(--board-bg-disabled);
+}
+
+.board div,
+.setup-board div {
+  border: 1px solid black;
+  position: relative;
+  cursor: pointer;
+}
+
+.board .hit,
+.board .miss {
+  pointer-events: none;
+}
+
+.board .hit::before,
+.board .hit::after {
+  background-color: var(--cross-hit-color);
+}
+
+.board .miss::before {
+  background-color: var(--cross-miss-color);
+}
+
+.board .miss::after {
+  display: none;
+}
+
+.board div::before,
+.board div::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.125rem;
+  height: 80%;
+}
+
+.board div:hover::before,
+.board div:hover::after {
+  background-color: var(--cross-light-color);
+}
+
+.board div::before {
+  transform: translate(-50%, -50%) rotateZ(45deg);
+}
+
+.board div::after {
+  transform: translate(-50%, -50%) rotateZ(-45deg);
+}
+
+.setup-board .placed {
+  background-color: cadetblue;
+}
+
+/* Information text area */
+.info-display {
+  display: flex;
+  color: var(--board-bg);
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-height: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Instruction text area */
+.instructions {
+  text-align: center;
+  margin-bottom: 0.6rem;
+}
